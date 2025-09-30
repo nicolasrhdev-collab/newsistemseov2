@@ -1,0 +1,377 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar Styles */
+aside {
+    min-height: 100vh;
+}
+
+aside nav a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+aside nav a:hover {
+    transform: translateX(2px);
+}
+
+/* Product Card */
+.product-card {
+    transition: all 0.2s ease;
+}
+
+/* View Toggle Buttons */
+.view-btn {
+    color: #737373;
+    background-color: white;
+}
+
+.view-btn:hover {
+    background-color: #fafafa;
+}
+
+.view-btn.active {
+    background-color: #171717;
+    color: white;
+}
+
+/* Product Menu (Three dots dropdown) */
+.product-menu {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Category Dropdown */
+.category-dropdown {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.15s ease-out;
+    position: fixed;
+    max-height: 240px;
+    z-index: 9999;
+}
+
+.category-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.category-dropdown::-webkit-scrollbar-track {
+    background: #fafafa;
+}
+
+.category-dropdown::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 3px;
+}
+
+.category-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+}
+
+/* Search and Filter */
+#filterMenu {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+#noResults {
+    grid-column: 1 / -1;
+}
+
+/* Main content area scrollbar */
+main::-webkit-scrollbar {
+    width: 8px;
+}
+
+main::-webkit-scrollbar-track {
+    background: #fafafa;
+}
+
+main::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 4px;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-overlay {
+    overflow-y: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Product Type Card */
+.product-type-card {
+    padding: 1.5rem;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 0.75rem;
+    text-align: center;
+    transition: all 0.2s ease;
+    background-color: white;
+}
+
+.product-type-card:hover {
+    border-color: #171717;
+    background-color: #fafafa;
+}
+
+.product-type-card h4 {
+    font-size: 0.938rem;
+}
+
+.product-type-card p {
+    font-size: 0.813rem;
+}
+
+/* Form Styles */
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #525252;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    background-color: white;
+    cursor: text;
+}
+
+input[type="number"].form-input,
+select.form-input {
+    cursor: pointer;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #171717;
+    box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.1);
+    background-color: white;
+}
+
+.form-input:hover:not(:focus) {
+    background-color: #fafafa;
+    border-color: #d4d4d4;
+}
+
+textarea.form-input:hover:not(:focus),
+select.form-input:hover:not(:focus) {
+    background-color: #fafafa;
+    border-color: #d4d4d4;
+}
+
+/* Select appearance */
+select.form-input::-ms-expand {
+    display: none;
+}
+
+/* Ensure proper cursor on all form elements */
+.form-input::placeholder {
+    color: #a3a3a3;
+    opacity: 1;
+}
+
+/* Fix cursor on SVG icons */
+svg {
+    pointer-events: none;
+}
+
+/* Button Styles */
+button {
+    cursor: pointer;
+    user-select: none;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Component Card */
+.component-card {
+    padding: 1rem;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 0.75rem;
+    background-color: #fafafa;
+}
+
+/* Package Item (no card background) */
+.package-item {
+    /* No background, no border - clean layout */
+}
+
+/* Step Indicator */
+.step-indicator {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #737373;
+    background-color: #fafafa;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    border: 1.5px solid #e5e5e5;
+}
+
+.step-indicator.active {
+    background-color: #171717;
+    color: white;
+    border-color: #171717;
+}
+
+.step-indicator.completed {
+    background-color: #f5f5f5;
+    color: #171717;
+    border-color: #d4d4d4;
+}
+
+/* Form Steps */
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar Styles */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-neutral {
+    background-color: #f5f5f5;
+    color: #404040;
+}
+
+/* Action Buttons */
+.action-btn {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateX(2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 0.5rem;
+        max-height: 95vh;
+    }
+    
+    .product-type-card {
+        padding: 1.5rem 1rem;
+    }
+}
+
