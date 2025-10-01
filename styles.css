@@ -468,6 +468,45 @@ textarea.form-input:hover:not(:focus) {
     display: block;
 }
 
+/* Schema Dropdowns - Modern Style */
+#productSchemaFields select,
+#extraSchemaFields select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23525252'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+    padding-right: 2.5rem;
+    border-radius: 0.75rem !important;
+    border: 2px solid #e5e5e5 !important;
+    background-color: #ffffff !important;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #404040;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+#productSchemaFields select:hover,
+#extraSchemaFields select:hover {
+    border-color: #d4d4d4 !important;
+    background-color: #fafafa !important;
+}
+
+#productSchemaFields select:focus,
+#extraSchemaFields select:focus {
+    outline: none;
+    border-color: #171717 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+#productSchemaFields select option,
+#extraSchemaFields select option {
+    padding: 0.75rem;
+    font-weight: 500;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .modal-content {
