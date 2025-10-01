@@ -377,10 +377,13 @@
 
                                 <!-- Benefícios -->
                                 <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <h3 class="text-xl font-semibold text-neutral-900">Benefícios</h3>
-                                        <button type="button" onclick="addBenefit()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
-                                            + Adicionar Benefício
+                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Benefícios</h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <input type="text" id="newBenefitInput" placeholder="Adicionar novo benefício" class="form-input flex-1">
+                                        <button type="button" onclick="addBenefitFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                     <div id="benefitsContainer" class="space-y-4"></div>
@@ -388,10 +391,13 @@
 
                                 <!-- Possíveis Usos -->
                                 <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <h3 class="text-xl font-semibold text-neutral-900">Possíveis Usos</h3>
-                                        <button type="button" onclick="addUse()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
-                                            + Adicionar Uso
+                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Possíveis Usos</h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <input type="text" id="newUseInput" placeholder="Adicionar novo uso" class="form-input flex-1">
+                                        <button type="button" onclick="addUseFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                     <div id="usesContainer" class="space-y-4"></div>
@@ -405,10 +411,13 @@
 
                                 <!-- Perguntas Frequentes -->
                                 <div class="mb-8">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <h3 class="text-xl font-semibold text-neutral-900">Perguntas Frequentes</h3>
-                                        <button type="button" onclick="addFAQ()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
-                                            + Adicionar Pergunta
+                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Perguntas Frequentes</h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <input type="text" id="newFAQInput" placeholder="Adicionar nova pergunta" class="form-input flex-1">
+                                        <button type="button" onclick="addFAQFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
                                         </button>
                                     </div>
                                     <div id="faqContainer" class="space-y-4"></div>

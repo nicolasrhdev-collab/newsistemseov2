@@ -1769,6 +1769,19 @@ document.getElementById('selectProductModal').addEventListener('click', function
 });
 
 // === BENEFÍCIOS ===
+function addBenefitFromInput() {
+    const input = document.getElementById('newBenefitInput');
+    const title = input.value.trim();
+    
+    if (title) {
+        benefitCounter++;
+        const id = benefitCounter;
+        benefits.push({ id, title: title, description: '' });
+        input.value = '';
+        renderBenefits();
+    }
+}
+
 function addBenefit() {
     benefitCounter++;
     const id = benefitCounter;
@@ -1815,6 +1828,19 @@ function updateBenefit(id, field, value) {
 }
 
 // === USOS ===
+function addUseFromInput() {
+    const input = document.getElementById('newUseInput');
+    const description = input.value.trim();
+    
+    if (description) {
+        useCounter++;
+        const id = useCounter;
+        uses.push({ id, description: description });
+        input.value = '';
+        renderUses();
+    }
+}
+
 function addUse() {
     useCounter++;
     const id = useCounter;
@@ -1855,6 +1881,19 @@ function updateUse(id, value) {
 }
 
 // === FAQ ===
+function addFAQFromInput() {
+    const input = document.getElementById('newFAQInput');
+    const question = input.value.trim();
+    
+    if (question) {
+        faqCounter++;
+        const id = faqCounter;
+        faqs.push({ id, question: question, answer: '' });
+        input.value = '';
+        renderFAQs();
+    }
+}
+
 function addFAQ() {
     faqCounter++;
     const id = faqCounter;
