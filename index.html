@@ -37,12 +37,7 @@
                     </svg>
                     SEO
                 </a>
-                <a href="#" id="menuUtilities" onclick="switchPage('utilities')" class="menu-item flex items-center gap-2 px-3 py-2.5 rounded-lg text-neutral-700 hover:bg-neutral-100 text-sm font-medium transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                    </svg>
-                    Utilidades
-                </a>
+                
             </nav>
         </aside>
 
@@ -453,33 +448,7 @@
                 </div>
                 <!-- End SEO Form Page -->
 
-                <!-- Utilities Page -->
-                <div id="utilitiesPage" class="hidden min-h-full flex flex-col">
-                    <div class="p-6 pb-0">
-                        <div class="mb-6 flex justify-between items-center">
-                            <div>
-                                <h2 class="text-2xl font-semibold text-neutral-900">Links Úteis</h2>
-                                <p class="text-sm text-neutral-500 mt-1">Gerencie seus links de referência</p>
-                            </div>
-                            <button onclick="openAddLinkModal()" class="px-4 py-2.5 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
-                                Criar Link
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Links List -->
-                    <div id="linksList" class="px-6 space-y-3"></div>
-                    <div id="emptyStateLinks" class="hidden flex-1 flex items-center justify-center px-6">
-                        <div class="text-center max-w-md">
-                            <svg class="w-16 h-16 mx-auto text-neutral-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                            </svg>
-                            <h3 class="text-lg font-medium text-neutral-900 mb-2">Nenhum link adicionado</h3>
-                            <p class="text-neutral-500">Adicione links úteis para consulta rápida</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Utilities Page -->
+                
             </main>
         </div>
     </div>
@@ -902,49 +871,7 @@
         </div>
     </div>
 
-    <!-- Modal Add/Edit Link -->
-    <div id="linkModal" class="modal-overlay">
-        <div class="modal-content max-w-lg">
-            <div class="px-6 py-5 border-b border-neutral-200">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-neutral-900" id="linkModalTitle">Adicionar Link</h3>
-                    <button onclick="closeLinkModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <form id="linkForm" class="p-6">
-                <input type="hidden" id="linkId">
-                
-                <div class="mb-4">
-                    <label class="form-label">Nome do Link *</label>
-                    <input type="text" id="linkName" placeholder="Ex: Inspiração de Design" class="form-input" required>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label">URL *</label>
-                    <input type="url" id="linkUrl" placeholder="https://exemplo.com" class="form-input" required>
-                </div>
-
-                <div class="mb-6">
-                    <label class="form-label">Categoria *</label>
-                    <div id="linkCategoryContainer"></div>
-                </div>
-
-                <div class="flex gap-3 justify-end">
-                    <button type="button" onclick="closeLinkModal()" class="px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
-                        Salvar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 
     <script src="script.js"></script>
 </body>

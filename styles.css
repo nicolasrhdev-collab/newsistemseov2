@@ -4,8 +4,7 @@ body {
 
 /* Ensure pages take full height */
 #productsPage,
-#seoPage,
-#utilitiesPage {
+#seoPage {
     min-height: 100%;
 }
 

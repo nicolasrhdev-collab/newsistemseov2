@@ -1,6 +1,4 @@
-// ===== USEFUL LINKS =====
-let usefulLinks = JSON.parse(localStorage.getItem('usefulLinks')) || [];
-const linkCategories = ['Pronto', 'Inspiração', 'Padrões'];
+// ===== USEFUL LINKS (REMOVIDO) =====
 
 // Initialize products with examples
 let products = JSON.parse(localStorage.getItem('products')) || [
@@ -1106,11 +1104,6 @@ function switchPage(page) {
         document.getElementById('actionButton').onclick = openSelectProductModal;
         document.getElementById('seoPage').classList.remove('hidden');
         renderSeoList();
-    } else if (page === 'utilities') {
-        document.getElementById('menuUtilities').classList.add('bg-neutral-900', 'text-white');
-        document.getElementById('menuUtilities').classList.remove('text-neutral-700', 'hover:bg-neutral-100');
-        document.getElementById('utilitiesPage').classList.remove('hidden');
-        renderLinksList();
     }
 }
 
@@ -2319,141 +2312,7 @@ function updateFAQ(id, field, value) {
 // ============= USEFUL LINKS MANAGEMENT =============
 
 // Render links list
-function renderLinksList() {
-    const container = document.getElementById('linksList');
-    const emptyState = document.getElementById('emptyStateLinks');
-    
-    if (usefulLinks.length === 0) {
-        container.innerHTML = '';
-        emptyState.classList.remove('hidden');
-        return;
-    }
-    
-    emptyState.classList.add('hidden');
-    
-    // Group by category
-    const groupedLinks = {};
-    linkCategories.forEach(cat => {
-        groupedLinks[cat] = usefulLinks.filter(link => link.category === cat);
-    });
-    
-    let html = '';
-    
-    linkCategories.forEach(category => {
-        const links = groupedLinks[category];
-        if (links.length > 0) {
-            html += `
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-neutral-900 mb-3">${category}</h3>
-                    <div class="space-y-2">
-                        ${links.map(link => `
-                            <div class="flex items-center gap-3 p-4 bg-white border border-neutral-200 rounded-lg hover:shadow-sm transition-all">
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-medium text-neutral-900 truncate">${link.name}</h4>
-                                    <a href="${link.url}" target="_blank" class="text-sm text-neutral-500 hover:text-neutral-700 truncate block">${link.url}</a>
-                                </div>
-                                <div class="flex gap-2 flex-shrink-0">
-                                    <a href="${link.url}" target="_blank" class="px-3 py-2 text-sm border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
-                                        Acessar
-                                    </a>
-                                    <button onclick="editLink(${link.id})" class="px-3 py-2 text-sm border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
-                                        Editar
-                                    </button>
-                                    <button onclick="deleteLink(${link.id})" class="px-3 py-2 text-sm text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-all">
-                                        Deletar
-                                    </button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-    });
-    
-    container.innerHTML = html;
-}
-
-// Open add link modal
-function openAddLinkModal() {
-    document.getElementById('linkModalTitle').textContent = 'Adicionar Link';
-    document.getElementById('linkForm').reset();
-    document.getElementById('linkId').value = '';
-    
-    // Initialize category dropdown
-    document.getElementById('linkCategoryContainer').innerHTML = createCustomDropdown('linkCategoryDropdown', linkCategories, '', 'Selecione uma categoria');
-    
-    document.getElementById('linkModal').classList.add('active');
-}
-
-// Close link modal
-function closeLinkModal() {
-    document.getElementById('linkModal').classList.remove('active');
-    document.getElementById('linkForm').reset();
-}
-
-// Edit link
-function editLink(id) {
-    const link = usefulLinks.find(l => l.id === id);
-    if (!link) return;
-    
-    document.getElementById('linkModalTitle').textContent = 'Editar Link';
-    document.getElementById('linkId').value = link.id;
-    document.getElementById('linkName').value = link.name;
-    document.getElementById('linkUrl').value = link.url;
-    
-    // Initialize category dropdown with selected value
-    document.getElementById('linkCategoryContainer').innerHTML = createCustomDropdown('linkCategoryDropdown', linkCategories, link.category, 'Selecione uma categoria');
-    
-    document.getElementById('linkModal').classList.add('active');
-}
-
-// Delete link
-function deleteLink(id) {
-    if (!confirm('Deseja realmente deletar este link?')) return;
-    
-    usefulLinks = usefulLinks.filter(l => l.id !== id);
-    localStorage.setItem('usefulLinks', JSON.stringify(usefulLinks));
-    renderLinksList();
-}
-
-// Save link
-document.getElementById('linkForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const id = document.getElementById('linkId').value;
-    const name = document.getElementById('linkName').value.trim();
-    const url = document.getElementById('linkUrl').value.trim();
-    const category = getCustomDropdownValue('linkCategoryDropdown');
-    
-    if (!name || !url || !category) {
-        alert('Preencha todos os campos obrigatórios!');
-        return;
-    }
-    
-    if (id) {
-        // Edit existing link
-        const link = usefulLinks.find(l => l.id === parseInt(id));
-        if (link) {
-            link.name = name;
-            link.url = url;
-            link.category = category;
-        }
-    } else {
-        // Add new link
-        const newId = usefulLinks.length > 0 ? Math.max(...usefulLinks.map(l => l.id)) + 1 : 1;
-        usefulLinks.push({
-            id: newId,
-            name: name,
-            url: url,
-            category: category
-        });
-    }
-    
-    localStorage.setItem('usefulLinks', JSON.stringify(usefulLinks));
-    closeLinkModal();
-    renderLinksList();
-});
+// (Funções de Links Úteis removidas)
 
 // Initial render
 renderProducts();
