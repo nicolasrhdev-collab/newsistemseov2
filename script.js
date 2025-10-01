@@ -1130,6 +1130,10 @@ function switchPage(page) {
             Novo Produto
         `;
         document.getElementById('actionButton').onclick = openTypeModal;
+        
+        // Reset export menu for products
+        document.querySelector('#exportMenu button').setAttribute('onclick', "exportToCSV('products')");
+        
         document.getElementById('productsPage').classList.remove('hidden');
         document.getElementById('seoPage').classList.add('hidden');
     } else if (page === 'seo') {
@@ -1143,6 +1147,10 @@ function switchPage(page) {
             Criar SEO
         `;
         document.getElementById('actionButton').onclick = openSelectProductModal;
+        
+        // Update export menu for SEO
+        document.querySelector('#exportMenu button').setAttribute('onclick', "exportToCSV('seo')");
+        
         document.getElementById('seoPage').classList.remove('hidden');
         renderSeoList();
     }
@@ -2354,6 +2362,93 @@ function updateFAQ(id, field, value) {
 
 // Render links list
 // (Funções de Links Úteis removidas)
+
+// ============= EXPORT TO CSV =============
+
+// Toggle export menu
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Close export menu when clicking outside
+document.addEventListener('click', function(event) {
+    const menu = document.getElementById('exportMenu');
+    const button = event.target.closest('button[onclick="toggleExportMenu()"]');
+    
+    if (!button && !menu.contains(event.target)) {
+        menu.classList.add('hidden');
+    }
+});
+
+// Export data to CSV
+function exportToCSV(type) {
+    let data, filename, headers;
+    
+    if (type === 'products') {
+        data = products;
+        filename = 'produtos.csv';
+        headers = ['ID', 'Tipo', 'Nome', 'SKU', 'Categoria', 'Peso (kg)', 'Preço (R$)'];
+        
+        // Convert products to CSV
+        let csvContent = headers.join(',') + '\n';
+        
+        data.forEach(product => {
+            const row = [
+                product.id,
+                product.type === 'simples' ? 'Simples' : 'Composto',
+                `"${product.name}"`,
+                product.sku,
+                `"${product.category}"`,
+                product.weight || '',
+                product.price || ''
+            ];
+            csvContent += row.join(',') + '\n';
+        });
+        
+        downloadCSV(csvContent, filename);
+        
+    } else if (type === 'seo') {
+        data = seoData;
+        filename = 'seo.csv';
+        headers = ['ID', 'Produto', 'Palavra-chave Principal', 'Title Tag', 'Meta Description', 'Slug'];
+        
+        // Convert SEO data to CSV
+        let csvContent = headers.join(',') + '\n';
+        
+        data.forEach(seo => {
+            const product = products.find(p => p.id === seo.productId);
+            const row = [
+                seo.id,
+                product ? `"${product.name}"` : '',
+                `"${seo.mainKeyword}"`,
+                `"${seo.titleTag}"`,
+                `"${seo.metaDescription}"`,
+                seo.slug
+            ];
+            csvContent += row.join(',') + '\n';
+        });
+        
+        downloadCSV(csvContent, filename);
+    }
+    
+    // Close menu after export
+    document.getElementById('exportMenu').classList.add('hidden');
+}
+
+// Download CSV file
+function downloadCSV(content, filename) {
+    const blob = new Blob(['\uFEFF' + content], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 // Initial render
 renderProducts();
