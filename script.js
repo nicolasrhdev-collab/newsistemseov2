@@ -2171,7 +2171,7 @@ function renderBenefits() {
     }
     
     container.innerHTML = benefits.map(benefit => `
-        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-50">
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-100">
             <input type="text" placeholder="Título do benefício" value="${benefit.title}" 
                 onchange="updateBenefit(${benefit.id}, 'title', this.value)" class="form-input flex-1">
             <input type="text" placeholder="Descrição rápida" value="${benefit.description}" 
@@ -2226,7 +2226,7 @@ function renderUses() {
     }
     
     container.innerHTML = uses.map(use => `
-        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-50">
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-100">
             <input type="text" placeholder="Título do uso" value="${use.title}" 
                 onchange="updateUse(${use.id}, 'title', this.value)" class="form-input flex-1">
             <input type="text" placeholder="Descrição do uso" value="${use.description}" 
@@ -2281,7 +2281,7 @@ function renderFAQs() {
     }
     
     container.innerHTML = faqs.map(faq => `
-        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-50">
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-neutral-100">
             <input type="text" placeholder="Pergunta" value="${faq.question}" 
                 onchange="updateFAQ(${faq.id}, 'question', this.value)" class="form-input flex-1">
             <input type="text" placeholder="Resposta" value="${faq.answer}" 

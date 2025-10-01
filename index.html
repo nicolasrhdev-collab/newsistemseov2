@@ -357,25 +357,21 @@
 
                         <!-- Etapa 3: Conteúdo -->
                         <div id="seoFormStep3" class="seo-form-step">
-                            <div class="mb-8">
+                            <div class="space-y-8">
                                 <!-- H1 e H2 -->
-                                <div class="mb-10 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Títulos</h3>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                                        <div>
-                                            <label class="form-label">H1 *</label>
-                                            <input type="text" id="h1Input" placeholder="Título principal da página" class="form-input">
-                                        </div>
-                                        <div>
-                                            <label class="form-label">H2</label>
-                                            <input type="text" id="h2Input" placeholder="Subtítulo da página" class="form-input">
-                                        </div>
-                                    </div>
+                                <div>
+                                    <label class="form-label">H1 *</label>
+                                    <input type="text" id="h1Input" placeholder="Título principal da página" class="form-input mb-4">
+                                    
+                                    <label class="form-label">H2</label>
+                                    <input type="text" id="h2Input" placeholder="Subtítulo da página" class="form-input">
                                 </div>
 
+                                <hr class="border-neutral-200">
+
                                 <!-- Benefícios -->
-                                <div class="mb-10 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Benefícios</h3>
+                                <div>
+                                    <label class="form-label">Benefícios</label>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newBenefitInput" placeholder="Adicionar novo benefício" class="form-input flex-1">
                                         <button type="button" onclick="addBenefitFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
@@ -387,9 +383,11 @@
                                     <div id="benefitsContainer" class="space-y-3"></div>
                                 </div>
 
+                                <hr class="border-neutral-200">
+
                                 <!-- Possíveis Usos -->
-                                <div class="mb-10 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Possíveis Usos</h3>
+                                <div>
+                                    <label class="form-label">Possíveis Usos</label>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newUseInput" placeholder="Adicionar novo uso" class="form-input flex-1">
                                         <button type="button" onclick="addUseFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
@@ -401,15 +399,19 @@
                                     <div id="usesContainer" class="space-y-3"></div>
                                 </div>
 
+                                <hr class="border-neutral-200">
+
                                 <!-- Avisos -->
-                                <div class="mb-10 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Avisos do Produto</h3>
+                                <div>
+                                    <label class="form-label">Avisos do Produto</label>
                                     <textarea id="warningsInput" placeholder="Digite avisos importantes sobre o produto (opcional)" class="form-input resize-none" rows="4"></textarea>
                                 </div>
 
+                                <hr class="border-neutral-200">
+
                                 <!-- Perguntas Frequentes -->
-                                <div class="mb-8">
-                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Perguntas Frequentes</h3>
+                                <div>
+                                    <label class="form-label">Perguntas Frequentes</label>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newFAQInput" placeholder="Adicionar nova pergunta" class="form-input flex-1">
                                         <button type="button" onclick="addFAQFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
