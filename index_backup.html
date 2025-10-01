@@ -195,109 +195,103 @@
                 <!-- End SEO Page -->
 
                 <!-- SEO Form Page -->
-                <div id="seoFormPage" class="hidden bg-white min-h-screen">
-                    <form id="seoFormMain" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-                        <input type="hidden" id="seoFormProductId">
-                        
+                <div id="seoFormPage" class="hidden bg-white">
+                    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
                         <!-- Header -->
-                        <div class="mb-8 flex items-center justify-between gap-4">
+                        <div class="mb-6 flex items-center justify-between gap-4">
                             <div class="min-w-0 flex-1">
-                                <h2 class="text-2xl sm:text-3xl font-semibold text-neutral-900">Cadastro de SEO</h2>
-                                <p id="seoFormProductName" class="text-sm text-neutral-500 mt-2">Selecionando produto para SEO</p>
+                                <h2 class="text-xl sm:text-2xl font-semibold text-neutral-900">Cadastro de SEO</h2>
+                                <p id="seoFormProductName" class="text-xs sm:text-sm text-neutral-500 mt-1 truncate"></p>
                             </div>
-                            <button type="button" onclick="closeSeoForm()" class="flex-shrink-0 text-neutral-400 hover:text-neutral-600 transition-colors">
+                            <button onclick="closeSeoForm()" class="flex-shrink-0 text-neutral-400 hover:text-neutral-600 transition-colors">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </button>
                         </div>
 
-                        <!-- Seção 1: Palavras-chave -->
-                        <div class="mb-8 pb-8 border-b border-neutral-200">
-                            <h3 class="text-xl font-semibold text-neutral-900 mb-6">1. Palavras-chave</h3>
+                        <!-- Form -->
+                        <form id="seoFormMain">
+                            <input type="hidden" id="seoFormProductId">
                             
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                <!-- Palavra-chave Principal -->
-                                <div>
+                            <!-- Etapa 1: Palavras-chave -->
+                            <div id="seoFormStep1" class="seo-form-step active">
+                                <h4 class="text-lg font-semibold text-neutral-900 mb-6">Palavras-chave</h4>
+                                
+                                <div class="mb-6">
                                     <label class="form-label">Palavra-chave Principal *</label>
                                     <input type="text" id="mainKeywordFormInput" placeholder="Digite a palavra-chave principal" class="form-input">
                                 </div>
                                 
-                                <!-- Palavras-chave Secundárias -->
-                                <div>
+                                <div class="mb-6">
                                     <label class="form-label">Palavras-chave Secundárias</label>
                                     <input type="text" id="secondaryKeywordFormInput" placeholder="Pressione Enter para adicionar" class="form-input" onkeypress="handleSecondaryKeywordFormEnter(event)">
                                     <div id="secondaryKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2.5"></div>
                                 </div>
                                 
-                                <!-- Palavras-chave de Cauda Longa -->
                                 <div>
                                     <label class="form-label">Palavras-chave de Cauda Longa</label>
                                     <input type="text" id="longTailKeywordFormInput" placeholder="Pressione Enter para adicionar" class="form-input" onkeypress="handleLongTailKeywordFormEnter(event)">
                                     <div id="longTailKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2.5"></div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Seção 2: Meta Tags -->
-                        <div class="mb-8 pb-8 border-b border-neutral-200">
-                            <h3 class="text-xl font-semibold text-neutral-900 mb-6">2. Meta Tags</h3>
-                            
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <!-- Campos de entrada -->
-                                <div class="space-y-6">
-                                    <div>
-                                        <label class="form-label">Title Tag *</label>
-                                        <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
-                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="form-label">Meta Description *</label>
-                                        <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
-                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="form-label">Slug *</label>
-                                        <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
-                                        <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
-                                    </div>
-                                </div>
+                            <!-- Etapa 2: Meta Tags -->
+                            <div id="seoFormStep2" class="seo-form-step">
+                                <h4 class="text-lg font-semibold text-neutral-900 mb-6">Meta Tags</h4>
                                 
-                                <!-- Preview -->
-                                <div>
-                                    <label class="form-label">Preview Google</label>
-                                    <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
-                                        <div class="mb-3">
-                                            <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                                    <div>
+                                        <div class="mb-6">
+                                            <label class="form-label">Title Tag *</label>
+                                            <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
+                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
                                         </div>
-                                        <div class="mb-3">
-                                            <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
+                                        
+                                        <div class="mb-6">
+                                            <label class="form-label">Meta Description *</label>
+                                            <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
+                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
                                         </div>
+                                        
                                         <div>
-                                            <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                            <label class="form-label">Slug *</label>
+                                            <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
+                                            <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
                                         </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="form-label">Preview Google</label>
+                                        <div class="border border-neutral-200 rounded-lg p-5 bg-neutral-50 shadow-sm">
+                                            <div class="mb-2">
+                                                <p class="text-xs text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
+                                            </div>
+                                            <div class="mb-2">
+                                                <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-neutral-500 mt-3">Preview aproximado do resultado no Google</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Seção 3: Schema -->
-                        <div class="mb-8">
-                            <h3 class="text-xl font-semibold text-neutral-900 mb-6">3. Schema</h3>
-                            
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <!-- Especificações Técnicas -->
-                                <div>
-                                    <label class="form-label">Especificações Técnicas</label>
-                                    <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 max-h-96 overflow-y-auto">
-                                        <div id="productFormSpecs" class="space-y-4"></div>
-                                    </div>
-                                </div>
+                            <!-- Etapa 3: Schema -->
+                            <div id="seoFormStep3" class="seo-form-step">
+                                <h4 class="text-lg font-semibold text-neutral-900 mb-6">Schema</h4>
                                 
-                                <!-- Schema -->
-                                <div class="space-y-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                                    <div>
+                                        <label class="form-label">Especificações Técnicas</label>
+                                        <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50 max-h-96 overflow-y-auto">
+                                            <div id="productFormSpecs" class="space-y-3"></div>
+                                        </div>
+                                        <p class="text-xs text-neutral-500 mt-3">Dados do produto selecionado</p>
+                                    </div>
+                                    
                                     <div>
                                         <label class="form-label">Tipo de Schema *</label>
                                         <select id="schemaTypeFormSelect" class="form-input" onchange="updateFormSchemaPreview()">
@@ -309,28 +303,42 @@
                                             <option value="FAQPage">FAQPage (Perguntas Frequentes)</option>
                                             <option value="BreadcrumbList">BreadcrumbList (Breadcrumb)</option>
                                         </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="form-label">Preview do Schema</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-900 text-green-400 font-mono text-sm max-h-64 overflow-y-auto">
-                                            <pre id="schemaFormPreview" class="whitespace-pre-wrap">Selecione um tipo de schema para visualizar</pre>
+                                        <p class="text-xs text-neutral-500 mt-3">Selecione o tipo de schema mais adequado</p>
+                                        
+                                        <div class="mt-6">
+                                            <label class="form-label">Preview do Schema</label>
+                                            <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-900 text-green-400 font-mono text-xs max-h-64 overflow-y-auto">
+                                                <pre id="schemaFormPreview" class="whitespace-pre-wrap">Selecione um tipo de schema para visualizar</pre>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Botões de Ação -->
-                        <div class="flex gap-4 justify-end pt-8 border-t border-neutral-200">
-                            <button type="button" onclick="closeSeoForm()" class="px-6 py-3 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
-                                Cancelar
-                            </button>
-                            <button type="submit" class="px-6 py-3 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
-                                Salvar SEO
-                            </button>
-                        </div>
-                    </form>
+                            <!-- Step Indicators -->
+                            <div class="flex gap-2 justify-center pt-4 border-t border-neutral-200 mt-6 mb-4">
+                                <button type="button" onclick="goToFormStep(1)" id="stepFormBtn1" class="w-2 h-2 rounded-full bg-neutral-900"></button>
+                                <button type="button" onclick="goToFormStep(2)" id="stepFormBtn2" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                                <button type="button" onclick="goToFormStep(3)" id="stepFormBtn3" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="flex flex-wrap gap-3">
+                                <button type="button" onclick="closeSeoForm()" class="px-4 py-2 border border-neutral-300 rounded-lg text-xs sm:text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
+                                    Cancelar
+                                </button>
+                                <button type="button" id="prevFormStepBtn" onclick="prevFormStep()" class="ml-auto px-4 py-2 border border-neutral-300 rounded-lg text-xs sm:text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all hidden">
+                                    Anterior
+                                </button>
+                                <button type="button" id="nextFormStepBtn" onclick="nextFormStep()" class="px-4 py-2 bg-neutral-900 text-white text-xs sm:text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm whitespace-nowrap">
+                                    <span id="nextFormStepText">Próxima</span>
+                                </button>
+                                <button type="submit" id="submitFormBtn" class="px-4 py-2 bg-neutral-900 text-white text-xs sm:text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden whitespace-nowrap">
+                                    Salvar SEO
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <!-- End SEO Form Page -->
             </main>
@@ -754,6 +762,206 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Cadastro de SEO -->
+    <div id="seoModal" class="modal-overlay">
+        <div class="modal-content max-w-5xl">
+            <div class="px-6 py-5 border-b border-neutral-200">
+                <div class="flex justify-between items-center">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-neutral-900">Cadastro de SEO</h3>
+                        <p id="seoProductName" class="text-sm text-neutral-500 mt-1"></p>
+                    </div>
+                    <button onclick="closeSeoModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <form id="seoForm" class="px-6 py-6">
+                <input type="hidden" id="seoProductId">
+                
+                <!-- Etapa 1: Palavras-chave -->
+                <div id="seoStep1" class="seo-step active">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Palavras-chave</h4>
+                    
+                    <!-- Palavra-chave Principal -->
+                    <div class="mb-6">
+                        <label class="form-label">Palavra-chave Principal *</label>
+                        <input 
+                            type="text" 
+                            id="mainKeywordInput" 
+                            placeholder="Digite a palavra-chave principal"
+                            class="form-input">
+                    </div>
+                    
+                    <!-- Palavras-chave Secundárias -->
+                    <div class="mb-6">
+                        <label class="form-label">Palavras-chave Secundárias</label>
+                        <input 
+                            type="text" 
+                            id="secondaryKeywordInput" 
+                            placeholder="Pressione Enter para adicionar"
+                            class="form-input"
+                            onkeypress="handleSecondaryKeywordEnter(event)">
+                        <div id="secondaryKeywordsContainer" class="flex flex-wrap gap-2 mt-2.5">
+                            <!-- Secondary keywords tags will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Palavras-chave de Cauda Longa -->
+                    <div>
+                        <label class="form-label">Palavras-chave de Cauda Longa</label>
+                        <input 
+                            type="text" 
+                            id="longTailKeywordInput" 
+                            placeholder="Pressione Enter para adicionar"
+                            class="form-input"
+                            onkeypress="handleLongTailKeywordEnter(event)">
+                        <div id="longTailKeywordsContainer" class="flex flex-wrap gap-2 mt-2.5">
+                            <!-- Long tail keywords tags will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 2: Meta Tags e Preview -->
+                <div id="seoStep2" class="seo-step">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Meta Tags</h4>
+                    
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- Formulário -->
+                        <div>
+                            <!-- Title Tag -->
+                            <div class="mb-6">
+                                <label class="form-label">Title Tag *</label>
+                                <input 
+                                    type="text" 
+                                    id="titleTagInput" 
+                                    placeholder="Digite o título da página"
+                                    class="form-input"
+                                    maxlength="60"
+                                    oninput="updatePreview()">
+                                <p class="text-xs text-neutral-500 mt-1.5"><span id="titleCount">0</span>/60 caracteres</p>
+                            </div>
+                            
+                            <!-- Meta Description -->
+                            <div class="mb-6">
+                                <label class="form-label">Meta Description *</label>
+                                <textarea 
+                                    id="metaDescriptionInput" 
+                                    placeholder="Digite a descrição da página"
+                                    class="form-input resize-none"
+                                    rows="4"
+                                    maxlength="160"
+                                    oninput="updatePreview()"></textarea>
+                                <p class="text-xs text-neutral-500 mt-1.5"><span id="descCount">0</span>/160 caracteres</p>
+                            </div>
+                            
+                            <!-- Slug -->
+                            <div>
+                                <label class="form-label">Slug *</label>
+                                <input 
+                                    type="text" 
+                                    id="slugInput" 
+                                    placeholder="digite-o-slug-da-url"
+                                    class="form-input"
+                                    oninput="updatePreview()">
+                                <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div>
+                            <label class="form-label">Preview Google</label>
+                            <div class="border border-neutral-200 rounded-lg p-5 bg-white shadow-sm">
+                                <div class="mb-2">
+                                    <p class="text-xs text-green-700" id="previewUrl">seusite.com.br/produto/slug-do-produto</p>
+                                </div>
+                                <div class="mb-2">
+                                    <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewTitle">Título do Produto | Sua Loja</h3>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-700 leading-relaxed" id="previewDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-neutral-500 mt-3">Preview aproximado do resultado no Google</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 3: Schema -->
+                <div id="seoStep3" class="seo-step">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Schema</h4>
+                    
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- Especificações Técnicas do Produto -->
+                        <div>
+                            <label class="form-label">Especificações Técnicas</label>
+                            <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50 max-h-96 overflow-y-auto">
+                                <div id="productSpecs" class="space-y-3">
+                                    <!-- Product specs will be inserted here -->
+                                </div>
+                            </div>
+                            <p class="text-xs text-neutral-500 mt-3">Dados do produto selecionado</p>
+                        </div>
+                        
+                        <!-- Tipo de Schema -->
+                        <div>
+                            <label class="form-label">Tipo de Schema *</label>
+                            <select id="schemaTypeSelect" class="form-input" onchange="updateSchemaPreview()">
+                                <option value="">Selecione o tipo de schema</option>
+                                <option value="Product">Product (Produto)</option>
+                                <option value="Offer">Offer (Oferta)</option>
+                                <option value="Review">Review (Avaliação)</option>
+                                <option value="AggregateRating">AggregateRating (Avaliações)</option>
+                                <option value="FAQPage">FAQPage (Perguntas Frequentes)</option>
+                                <option value="BreadcrumbList">BreadcrumbList (Breadcrumb)</option>
+                            </select>
+                            <p class="text-xs text-neutral-500 mt-3">Selecione o tipo de schema mais adequado</p>
+                            
+                            <!-- Schema Preview -->
+                            <div class="mt-6">
+                                <label class="form-label">Preview do Schema</label>
+                                <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-900 text-green-400 font-mono text-xs max-h-64 overflow-y-auto">
+                                    <pre id="schemaPreview" class="whitespace-pre-wrap">Selecione um tipo de schema para visualizar</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Indicators -->
+                <div class="flex gap-2 justify-center pt-4 border-t border-neutral-200 mt-6 mb-4">
+                    <button type="button" onclick="goToStep(1)" id="stepBtn1" class="w-2 h-2 rounded-full bg-neutral-900"></button>
+                    <button type="button" onclick="goToStep(2)" id="stepBtn2" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                    <button type="button" onclick="goToStep(3)" id="stepBtn3" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeSeoModal()" 
+                        class="px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
+                        Cancelar
+                    </button>
+                    <button type="button" id="prevStepBtn" onclick="prevStep()" 
+                        class="ml-auto px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all hidden">
+                        Anterior
+                    </button>
+                    <button type="button" id="nextStepBtn" onclick="nextStep()" 
+                        class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
+                        <span id="nextStepText">Próxima</span>
+                    </button>
+                    <button type="submit" id="submitBtn"
+                        class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden">
+                        Salvar SEO
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
