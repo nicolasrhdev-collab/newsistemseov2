@@ -679,14 +679,96 @@
                     </div>
                 </div>
 
+                <!-- Etapa 2: Meta Tags e Preview -->
+                <div id="seoStep2" class="seo-step">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Meta Tags</h4>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <!-- Formulário -->
+                        <div>
+                            <!-- Title Tag -->
+                            <div class="mb-6">
+                                <label class="form-label">Title Tag *</label>
+                                <input 
+                                    type="text" 
+                                    id="titleTagInput" 
+                                    placeholder="Digite o título da página"
+                                    class="form-input"
+                                    maxlength="60"
+                                    oninput="updatePreview()"
+                                    required>
+                                <p class="text-xs text-neutral-500 mt-1"><span id="titleCount">0</span>/60 caracteres</p>
+                            </div>
+                            
+                            <!-- Meta Description -->
+                            <div class="mb-6">
+                                <label class="form-label">Meta Description *</label>
+                                <textarea 
+                                    id="metaDescriptionInput" 
+                                    placeholder="Digite a descrição da página"
+                                    class="form-input resize-none"
+                                    rows="3"
+                                    maxlength="160"
+                                    oninput="updatePreview()"
+                                    required></textarea>
+                                <p class="text-xs text-neutral-500 mt-1"><span id="descCount">0</span>/160 caracteres</p>
+                            </div>
+                            
+                            <!-- Slug -->
+                            <div class="mb-6">
+                                <label class="form-label">Slug *</label>
+                                <input 
+                                    type="text" 
+                                    id="slugInput" 
+                                    placeholder="digite-o-slug-da-url"
+                                    class="form-input"
+                                    oninput="updatePreview()"
+                                    required>
+                                <p class="text-xs text-neutral-500 mt-1">URL amigável para SEO</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div>
+                            <label class="form-label">Preview Google</label>
+                            <div class="border border-neutral-200 rounded-lg p-4 bg-white">
+                                <div class="mb-1">
+                                    <p class="text-xs text-neutral-500" id="previewUrl">seusite.com.br/produto/slug-do-produto</p>
+                                </div>
+                                <div class="mb-2">
+                                    <h3 class="text-lg text-blue-700 font-medium hover:underline cursor-pointer" id="previewTitle">Título do Produto | Sua Loja</h3>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-600 leading-relaxed" id="previewDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-neutral-500 mt-2">Preview aproximado do resultado no Google</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Indicators -->
+                <div class="flex gap-2 justify-center pt-4 border-t border-neutral-200 mt-6 mb-4">
+                    <button type="button" onclick="goToStep(1)" id="stepBtn1" class="w-2 h-2 rounded-full bg-neutral-900"></button>
+                    <button type="button" onclick="goToStep(2)" id="stepBtn2" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                </div>
+
                 <!-- Navigation Buttons -->
-                <div class="flex gap-3 pt-4 border-t border-neutral-200 mt-6">
+                <div class="flex gap-3">
                     <button type="button" onclick="closeSeoModal()" 
                         class="px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
                         Cancelar
                     </button>
-                    <button type="submit" 
-                        class="ml-auto px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
+                    <button type="button" id="prevStepBtn" onclick="prevStep()" 
+                        class="ml-auto px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all hidden">
+                        Anterior
+                    </button>
+                    <button type="button" id="nextStepBtn" onclick="nextStep()" 
+                        class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
+                        Próxima
+                    </button>
+                    <button type="submit" id="submitBtn"
+                        class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden">
                         Salvar SEO
                     </button>
                 </div>

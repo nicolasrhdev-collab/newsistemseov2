@@ -278,6 +278,17 @@ button:active {
     display: block;
 }
 
+/* Textarea */
+textarea.form-input {
+    font-family: inherit;
+    cursor: text;
+}
+
+textarea.form-input:hover:not(:focus) {
+    background-color: #fafafa;
+    border-color: #d4d4d4;
+}
+
 /* Step Indicator */
 .step-indicator {
     padding: 0.5rem 1rem;

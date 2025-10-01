@@ -83,6 +83,7 @@ let packageCounter = 0;
 let currentEditId = null;
 let currentView = 'todos'; // todos, simples, composto
 let currentPage = 'produtos'; // produtos, seo
+let currentSeoStep = 1;
 let secondaryKeywords = [];
 let longTailKeywords = [];
 let seoData = JSON.parse(localStorage.getItem('seoData')) || [];
@@ -1220,10 +1221,13 @@ function selectProductForSeo(productId) {
 function openSeoModal() {
     const modal = document.getElementById('seoModal');
     modal.classList.add('active');
+    currentSeoStep = 1;
     secondaryKeywords = [];
     longTailKeywords = [];
     renderSecondaryKeywords();
     renderLongTailKeywords();
+    goToStep(1);
+    updatePreview();
 }
 
 // Close SEO modal
@@ -1235,6 +1239,78 @@ function closeSeoModal() {
     longTailKeywords = [];
     renderSecondaryKeywords();
     renderLongTailKeywords();
+    currentSeoStep = 1;
+}
+
+// SEO Step Navigation
+function goToStep(step) {
+    currentSeoStep = step;
+    
+    // Hide all steps
+    document.querySelectorAll('.seo-step').forEach(s => s.classList.remove('active'));
+    
+    // Show current step
+    document.getElementById(`seoStep${step}`).classList.add('active');
+    
+    // Update step indicators
+    for (let i = 1; i <= 2; i++) {
+        const btn = document.getElementById(`stepBtn${i}`);
+        if (i === step) {
+            btn.classList.remove('bg-neutral-300');
+            btn.classList.add('bg-neutral-900');
+        } else {
+            btn.classList.remove('bg-neutral-900');
+            btn.classList.add('bg-neutral-300');
+        }
+    }
+    
+    // Update navigation buttons
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (step === 1) {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+    } else if (step === 2) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+    }
+}
+
+function nextStep() {
+    if (currentSeoStep < 2) {
+        // Validate current step
+        const mainKeyword = document.getElementById('mainKeywordInput').value.trim();
+        if (!mainKeyword) {
+            alert('Preencha a palavra-chave principal!');
+            return;
+        }
+        goToStep(currentSeoStep + 1);
+    }
+}
+
+function prevStep() {
+    if (currentSeoStep > 1) {
+        goToStep(currentSeoStep - 1);
+    }
+}
+
+// Update Preview
+function updatePreview() {
+    const title = document.getElementById('titleTagInput').value || 'Título do Produto | Sua Loja';
+    const description = document.getElementById('metaDescriptionInput').value || 'A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.';
+    const slug = document.getElementById('slugInput').value || 'slug-do-produto';
+    
+    document.getElementById('previewTitle').textContent = title;
+    document.getElementById('previewDescription').textContent = description;
+    document.getElementById('previewUrl').textContent = `seusite.com.br/produto/${slug}`;
+    
+    // Update character counts
+    document.getElementById('titleCount').textContent = document.getElementById('titleTagInput').value.length;
+    document.getElementById('descCount').textContent = document.getElementById('metaDescriptionInput').value.length;
 }
 
 // Add secondary keyword
@@ -1268,7 +1344,7 @@ function renderSecondaryKeywords() {
     const container = document.getElementById('secondaryKeywordsContainer');
     
     if (secondaryKeywords.length === 0) {
-        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave secundária adicionada</p>';
+        container.innerHTML = '';
     } else {
         container.innerHTML = secondaryKeywords.map(keyword => `
             <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-800 text-sm rounded-lg">
@@ -1314,7 +1390,7 @@ function renderLongTailKeywords() {
     const container = document.getElementById('longTailKeywordsContainer');
     
     if (longTailKeywords.length === 0) {
-        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave de cauda longa adicionada</p>';
+        container.innerHTML = '';
     } else {
         container.innerHTML = longTailKeywords.map(keyword => `
             <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-100 text-purple-800 text-sm rounded-lg">
@@ -1335,9 +1411,17 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
     
     const productId = parseInt(document.getElementById('seoProductId').value);
     const mainKeyword = document.getElementById('mainKeywordInput').value.trim();
+    const titleTag = document.getElementById('titleTagInput').value.trim();
+    const metaDescription = document.getElementById('metaDescriptionInput').value.trim();
+    const slug = document.getElementById('slugInput').value.trim();
     
     if (!mainKeyword) {
         alert('Adicione a palavra-chave principal!');
+        return;
+    }
+    
+    if (!titleTag || !metaDescription || !slug) {
+        alert('Preencha todos os campos obrigatórios!');
         return;
     }
     
@@ -1348,7 +1432,10 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
         productId: productId,
         mainKeyword: mainKeyword,
         secondaryKeywords: [...secondaryKeywords],
-        longTailKeywords: [...longTailKeywords]
+        longTailKeywords: [...longTailKeywords],
+        titleTag: titleTag,
+        metaDescription: metaDescription,
+        slug: slug
     });
     
     localStorage.setItem('seoData', JSON.stringify(seoData));
