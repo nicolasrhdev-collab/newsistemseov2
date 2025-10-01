@@ -290,17 +290,36 @@
                             <div class="mb-8">
                                 <h3 class="text-xl font-semibold text-neutral-900 mb-6">Meta Tags</h3>
                                 
-                                <div class="space-y-6">
-                                    <div>
-                                        <label class="form-label">Title Tag *</label>
-                                        <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
-                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <!-- Campos de entrada -->
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label class="form-label">Title Tag *</label>
+                                            <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
+                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="form-label">Meta Description *</label>
+                                            <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
+                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
+                                        </div>
                                     </div>
                                     
+                                    <!-- Preview Google -->
                                     <div>
-                                        <label class="form-label">Meta Description *</label>
-                                        <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
-                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
+                                        <label class="form-label">Preview Google</label>
+                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
+                                            <div class="mb-3">
+                                                <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
