@@ -2171,20 +2171,16 @@ function renderBenefits() {
     }
     
     container.innerHTML = benefits.map(benefit => `
-        <div class="border border-neutral-200 rounded-lg p-4 bg-white">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <input type="text" placeholder="Título do benefício" value="${benefit.title}" 
-                    onchange="updateBenefit(${benefit.id}, 'title', this.value)" class="form-input">
-                <div class="flex gap-2">
-                    <input type="text" placeholder="Descrição rápida" value="${benefit.description}" 
-                        onchange="updateBenefit(${benefit.id}, 'description', this.value)" class="form-input flex-1">
-                    <button type="button" onclick="removeBenefit(${benefit.id})" class="px-3 text-red-600 hover:bg-red-50 rounded-lg transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-white">
+            <input type="text" placeholder="Título do benefício" value="${benefit.title}" 
+                onchange="updateBenefit(${benefit.id}, 'title', this.value)" class="form-input flex-1">
+            <input type="text" placeholder="Descrição rápida" value="${benefit.description}" 
+                onchange="updateBenefit(${benefit.id}, 'description', this.value)" class="form-input flex-1">
+            <button type="button" onclick="removeBenefit(${benefit.id})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
         </div>
     `).join('');
 }
@@ -2199,12 +2195,12 @@ function updateBenefit(id, field, value) {
 // === USOS ===
 function addUseFromInput() {
     const input = document.getElementById('newUseInput');
-    const description = input.value.trim();
+    const title = input.value.trim();
     
-    if (description) {
+    if (title) {
         useCounter++;
         const id = useCounter;
-        uses.push({ id, description: description });
+        uses.push({ id, title: title, description: '' });
         input.value = '';
         renderUses();
     }
@@ -2230,10 +2226,12 @@ function renderUses() {
     }
     
     container.innerHTML = uses.map(use => `
-        <div class="flex gap-2">
-            <input type="text" placeholder="Descreva um possível uso" value="${use.description}" 
-                onchange="updateUse(${use.id}, this.value)" class="form-input flex-1">
-            <button type="button" onclick="removeUse(${use.id})" class="px-3 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-white">
+            <input type="text" placeholder="Título do uso" value="${use.title}" 
+                onchange="updateUse(${use.id}, 'title', this.value)" class="form-input flex-1">
+            <input type="text" placeholder="Descrição do uso" value="${use.description}" 
+                onchange="updateUse(${use.id}, 'description', this.value)" class="form-input flex-1">
+            <button type="button" onclick="removeUse(${use.id})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all flex-shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -2242,10 +2240,10 @@ function renderUses() {
     `).join('');
 }
 
-function updateUse(id, value) {
+function updateUse(id, field, value) {
     const use = uses.find(u => u.id === id);
     if (use) {
-        use.description = value;
+        use[field] = value;
     }
 }
 
@@ -2283,20 +2281,16 @@ function renderFAQs() {
     }
     
     container.innerHTML = faqs.map(faq => `
-        <div class="border border-neutral-200 rounded-lg p-4 bg-white">
-            <div class="space-y-4">
-                <div class="flex gap-2 items-start">
-                    <input type="text" placeholder="Pergunta" value="${faq.question}" 
-                        onchange="updateFAQ(${faq.id}, 'question', this.value)" class="form-input flex-1">
-                    <button type="button" onclick="removeFAQ(${faq.id})" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <textarea placeholder="Resposta" value="${faq.answer}" 
-                    onchange="updateFAQ(${faq.id}, 'answer', this.value)" class="form-input resize-none" rows="3">${faq.answer}</textarea>
-            </div>
+        <div class="flex gap-3 items-center border border-neutral-200 rounded-lg p-3 bg-white">
+            <input type="text" placeholder="Pergunta" value="${faq.question}" 
+                onchange="updateFAQ(${faq.id}, 'question', this.value)" class="form-input flex-1">
+            <input type="text" placeholder="Resposta" value="${faq.answer}" 
+                onchange="updateFAQ(${faq.id}, 'answer', this.value)" class="form-input flex-1">
+            <button type="button" onclick="removeFAQ(${faq.id})" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
         </div>
     `).join('');
 }
