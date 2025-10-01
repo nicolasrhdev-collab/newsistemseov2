@@ -1232,6 +1232,11 @@ function openSeoForm() {
     longTailKeywords = [];
     renderSecondaryKeywordsForm();
     renderLongTailKeywordsForm();
+    
+    // Initialize gender dropdown
+    const genderOptions = ['Masculino', 'Feminino', 'Unissex'];
+    document.getElementById('genderSelectContainer').innerHTML = createCustomDropdown('genderDropdown', genderOptions, '', 'Selecione');
+    
     goToFormStep(1);
     updateFormPreview();
 }
@@ -1444,15 +1449,98 @@ function selectSchemaType(element, value, dropdownId) {
 
 // Close dropdowns when clicking outside
 document.addEventListener('click', function(event) {
-    if (!event.target.closest('.schema-dropdown-wrapper')) {
-        document.querySelectorAll('.schema-dropdown-menu').forEach(menu => {
+    if (!event.target.closest('.custom-dropdown-wrapper') && !event.target.closest('.schema-dropdown-wrapper')) {
+        document.querySelectorAll('.custom-dropdown-menu, .schema-dropdown-menu').forEach(menu => {
             menu.style.display = 'none';
         });
-        document.querySelectorAll('.schema-dropdown-trigger').forEach(btn => {
+        document.querySelectorAll('.custom-dropdown-trigger, .schema-dropdown-trigger').forEach(btn => {
             btn.classList.remove('active');
         });
     }
 });
+
+// ===== GENERIC CUSTOM DROPDOWN =====
+// Create generic custom dropdown
+function createCustomDropdown(id, options, selectedValue = '', placeholder = 'Selecione') {
+    const displayValue = selectedValue || placeholder;
+    const optionsHTML = options.map(opt => {
+        const value = typeof opt === 'string' ? opt : opt.value;
+        const label = typeof opt === 'string' ? opt : opt.label;
+        return `<div class="custom-dropdown-item ${value === selectedValue ? 'selected' : ''}" onclick="selectCustomDropdownItem(this, '${value}', '${id}')">${label}</div>`;
+    }).join('');
+    
+    return `
+        <div class="custom-dropdown-wrapper">
+            <button type="button" class="custom-dropdown-trigger" onclick="toggleCustomDropdown(event, '${id}')">
+                <span>${displayValue}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div id="${id}" class="custom-dropdown-menu" style="display: none;">
+                <div class="custom-dropdown-item ${!selectedValue ? 'selected' : ''}" onclick="selectCustomDropdownItem(this, '', '${id}')">${placeholder}</div>
+                ${optionsHTML}
+            </div>
+        </div>
+    `;
+}
+
+// Toggle custom dropdown
+function toggleCustomDropdown(event, dropdownId) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(dropdownId);
+    const trigger = event.currentTarget;
+    const isOpen = dropdown.style.display === 'block';
+    
+    // Close all dropdowns
+    document.querySelectorAll('.custom-dropdown-menu, .schema-dropdown-menu').forEach(menu => {
+        menu.style.display = 'none';
+    });
+    document.querySelectorAll('.custom-dropdown-trigger, .schema-dropdown-trigger').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Toggle current dropdown
+    if (!isOpen) {
+        dropdown.style.display = 'block';
+        trigger.classList.add('active');
+    }
+}
+
+// Select custom dropdown item
+function selectCustomDropdownItem(element, value, dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const trigger = dropdown.previousElementSibling;
+    const displayText = element.textContent;
+    
+    // Update trigger text
+    trigger.querySelector('span').textContent = displayText;
+    
+    // Update selected state
+    dropdown.querySelectorAll('.custom-dropdown-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    
+    // Store value in data attribute
+    trigger.setAttribute('data-value', value);
+    
+    // Close dropdown
+    dropdown.style.display = 'none';
+    trigger.classList.remove('active');
+    
+    // Trigger change event for form handling
+    const changeEvent = new CustomEvent('dropdownChange', { detail: { id: dropdownId, value: value } });
+    document.dispatchEvent(changeEvent);
+}
+
+// Get selected value from custom dropdown
+function getCustomDropdownValue(triggerId) {
+    const menu = document.getElementById(triggerId);
+    if (!menu) return '';
+    const trigger = menu.previousElementSibling;
+    return trigger.getAttribute('data-value') || '';
+}
 
 // Load Product Specs as Schema Fields
 function loadProductFormSpecsAsInputs() {
@@ -1908,13 +1996,12 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
     const titleTag = document.getElementById('titleTagFormInput').value.trim();
     const metaDescription = document.getElementById('metaDescriptionFormInput').value.trim();
     const slug = document.getElementById('slugFormInput').value.trim();
-    const schemaType = document.getElementById('schemaTypeInput').value.trim();
     
     // Etapa 1: Público e Segmentação
     const targetAudience = document.getElementById('targetAudienceInput').value.trim();
     const secondaryAudience = document.getElementById('secondaryAudienceInput').value.trim();
     const storeType = document.getElementById('storeTypeInput').value.trim();
-    const gender = document.getElementById('genderSelect').value;
+    const gender = getCustomDropdownValue('genderDropdown');
     const productValue = document.getElementById('productValueInput').value.trim();
     
     // Etapa 3: Conteúdo
@@ -1935,11 +2022,6 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
     
     if (!titleTag || !metaDescription || !slug) {
         alert('Preencha todos os campos obrigatórios (Title Tag, Meta Description e Slug)!');
-        return;
-    }
-    
-    if (!schemaType) {
-        alert('Preencha o tipo de schema na etapa 2!');
         return;
     }
     
@@ -1964,7 +2046,6 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
         titleTag: titleTag,
         metaDescription: metaDescription,
         slug: slug,
-        schemaType: schemaType,
         h1: h1,
         h2: h2,
         benefits: [...benefits],
