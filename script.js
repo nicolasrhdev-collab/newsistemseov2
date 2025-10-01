@@ -1366,12 +1366,93 @@ function updateFormPreview() {
     document.getElementById('descFormCount').textContent = document.getElementById('metaDescriptionFormInput').value.length;
 }
 
-// Generate schema type options
+// Generate schema type options for dropdown menu
 function generateSchemaTypeOptions(selectedType = '') {
     return schemaTypes.map(type => 
-        `<option value="${type}" ${type === selectedType ? 'selected' : ''}>${type}</option>`
+        `<div class="schema-dropdown-item ${type === selectedType ? 'selected' : ''}" onclick="selectSchemaType(this, '${type}')">${type}</div>`
     ).join('');
 }
+
+// Create custom dropdown button
+function createSchemaDropdown(id, selectedValue = '') {
+    const displayValue = selectedValue || 'Selecione';
+    return `
+        <div class="schema-dropdown-wrapper">
+            <button type="button" class="schema-dropdown-trigger" onclick="toggleSchemaDropdown(event, '${id}')">
+                <span>${displayValue}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div id="${id}" class="schema-dropdown-menu" style="display: none;">
+                <div class="schema-dropdown-item ${!selectedValue ? 'selected' : ''}" onclick="selectSchemaType(this, '', '${id}')">Selecione</div>
+                ${schemaTypes.map(type => 
+                    `<div class="schema-dropdown-item ${type === selectedValue ? 'selected' : ''}" onclick="selectSchemaType(this, '${type}', '${id}')">${type}</div>`
+                ).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// Toggle schema dropdown
+function toggleSchemaDropdown(event, dropdownId) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(dropdownId);
+    const trigger = event.currentTarget;
+    const isOpen = dropdown.style.display === 'block';
+    
+    // Close all dropdowns
+    document.querySelectorAll('.schema-dropdown-menu').forEach(menu => {
+        menu.style.display = 'none';
+    });
+    document.querySelectorAll('.schema-dropdown-trigger').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Toggle current dropdown
+    if (!isOpen) {
+        dropdown.style.display = 'block';
+        trigger.classList.add('active');
+    }
+}
+
+// Select schema type from dropdown
+function selectSchemaType(element, value, dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    const trigger = dropdown.previousElementSibling;
+    const displayText = value || 'Selecione';
+    
+    // Update trigger text
+    trigger.querySelector('span').textContent = displayText;
+    
+    // Update selected state
+    dropdown.querySelectorAll('.schema-dropdown-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    
+    // If this is an extra schema field dropdown, update the field type
+    if (dropdownId.startsWith('extraSchemaDropdown_')) {
+        const fieldId = parseInt(dropdownId.replace('extraSchemaDropdown_', ''));
+        updateSchemaField(fieldId, 'type', value);
+    }
+    
+    // Close dropdown
+    dropdown.style.display = 'none';
+    trigger.classList.remove('active');
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.schema-dropdown-wrapper')) {
+        document.querySelectorAll('.schema-dropdown-menu').forEach(menu => {
+            menu.style.display = 'none';
+        });
+        document.querySelectorAll('.schema-dropdown-trigger').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+});
 
 // Load Product Specs as Schema Fields
 function loadProductFormSpecsAsInputs() {
@@ -1385,6 +1466,7 @@ function loadProductFormSpecsAsInputs() {
     }
     
     let fieldsHTML = '';
+    let fieldCounter = 0;
     
     // Nome
     fieldsHTML += `
@@ -1395,10 +1477,7 @@ function loadProductFormSpecsAsInputs() {
             </div>
             <div>
                 <label class="form-label text-sm">Tipo Schema</label>
-                <select class="form-input">
-                    <option value="">Selecione</option>
-                    ${generateSchemaTypeOptions('name')}
-                </select>
+                ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'name')}
             </div>
         </div>
     `;
@@ -1412,10 +1491,7 @@ function loadProductFormSpecsAsInputs() {
             </div>
             <div>
                 <label class="form-label text-sm">Tipo Schema</label>
-                <select class="form-input">
-                    <option value="">Selecione</option>
-                    ${generateSchemaTypeOptions('sku')}
-                </select>
+                ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'sku')}
             </div>
         </div>
     `;
@@ -1429,10 +1505,7 @@ function loadProductFormSpecsAsInputs() {
             </div>
             <div>
                 <label class="form-label text-sm">Tipo Schema</label>
-                <select class="form-input">
-                    <option value="">Selecione</option>
-                    ${generateSchemaTypeOptions('category')}
-                </select>
+                ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'category')}
             </div>
         </div>
     `;
@@ -1447,10 +1520,7 @@ function loadProductFormSpecsAsInputs() {
                 </div>
                 <div>
                     <label class="form-label text-sm">Tipo Schema</label>
-                    <select class="form-input">
-                        <option value="">Selecione</option>
-                        ${generateSchemaTypeOptions('weight')}
-                    </select>
+                    ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'weight')}
                 </div>
             </div>
         `;
@@ -1466,10 +1536,7 @@ function loadProductFormSpecsAsInputs() {
                 </div>
                 <div>
                     <label class="form-label text-sm">Tipo Schema</label>
-                    <select class="form-input">
-                        <option value="">Selecione</option>
-                        ${generateSchemaTypeOptions('price')}
-                    </select>
+                    ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'price')}
                 </div>
             </div>
         `;
@@ -1486,10 +1553,7 @@ function loadProductFormSpecsAsInputs() {
                     </div>
                     <div>
                         <label class="form-label text-sm">Tipo Schema</label>
-                        <select class="form-input">
-                            <option value="">Selecione</option>
-                            ${generateSchemaTypeOptions('brand')}
-                        </select>
+                        ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'brand')}
                     </div>
                 </div>
             `;
@@ -1503,10 +1567,7 @@ function loadProductFormSpecsAsInputs() {
                     </div>
                     <div>
                         <label class="form-label text-sm">Tipo Schema</label>
-                        <select class="form-input">
-                            <option value="">Selecione</option>
-                            ${generateSchemaTypeOptions('material')}
-                        </select>
+                        ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'material')}
                     </div>
                 </div>
             `;
@@ -1520,10 +1581,7 @@ function loadProductFormSpecsAsInputs() {
                     </div>
                     <div>
                         <label class="form-label text-sm">Tipo Schema</label>
-                        <select class="form-input">
-                            <option value="">Selecione</option>
-                            ${generateSchemaTypeOptions('width')}
-                        </select>
+                        ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'width')}
                     </div>
                 </div>
             `;
@@ -1537,10 +1595,7 @@ function loadProductFormSpecsAsInputs() {
                     </div>
                     <div>
                         <label class="form-label text-sm">Tipo Schema</label>
-                        <select class="form-input">
-                            <option value="">Selecione</option>
-                            ${generateSchemaTypeOptions('height')}
-                        </select>
+                        ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'height')}
                     </div>
                 </div>
             `;
@@ -1554,10 +1609,7 @@ function loadProductFormSpecsAsInputs() {
                     </div>
                     <div>
                         <label class="form-label text-sm">Tipo Schema</label>
-                        <select class="form-input">
-                            <option value="">Selecione</option>
-                            ${generateSchemaTypeOptions('depth')}
-                        </select>
+                        ${createSchemaDropdown('schemaDropdown_' + fieldCounter++, 'depth')}
                     </div>
                 </div>
             `;
@@ -1991,10 +2043,7 @@ function renderExtraSchemaFields() {
             </div>
             <div>
                 <label class="form-label text-sm">Tipo Schema</label>
-                <select class="form-input" onchange="updateSchemaField(${field.id}, 'type', this.value)">
-                    <option value="">Selecione</option>
-                    ${generateSchemaTypeOptions(field.type)}
-                </select>
+                ${createSchemaDropdown('extraSchemaDropdown_' + field.id, field.type)}
             </div>
             <div>
                 <button type="button" onclick="removeSchemaField(${field.id})" class="w-full px-3 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-all">
