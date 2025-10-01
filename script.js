@@ -1261,38 +1261,32 @@ function goToFormStep(step) {
     for (let i = 1; i <= 3; i++) {
         const btn = document.getElementById(`stepFormBtn${i}`);
         if (i === step) {
-            btn.classList.remove('bg-neutral-300');
-            btn.classList.add('bg-neutral-900');
+            btn.classList.remove('bg-neutral-200', 'text-neutral-600');
+            btn.classList.add('bg-neutral-900', 'text-white');
         } else {
-            btn.classList.remove('bg-neutral-900');
-            btn.classList.add('bg-neutral-300');
+            btn.classList.remove('bg-neutral-900', 'text-white');
+            btn.classList.add('bg-neutral-200', 'text-neutral-600');
         }
     }
     
     // Update navigation buttons
     const prevBtn = document.getElementById('prevFormStepBtn');
     const nextBtn = document.getElementById('nextFormStepBtn');
-    const nextStepText = document.getElementById('nextFormStepText');
     const submitBtn = document.getElementById('submitFormBtn');
     
     if (step === 1) {
         prevBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
-        nextStepText.textContent = 'Próxima';
         submitBtn.classList.add('hidden');
     } else if (step === 2) {
         prevBtn.classList.remove('hidden');
         nextBtn.classList.remove('hidden');
-        nextStepText.textContent = 'Próxima';
         submitBtn.classList.add('hidden');
     } else if (step === 3) {
         prevBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
-    }
-    
-    // Load product specs when entering step 3
-    if (step === 3) {
+        // Load product specs when entering step 3
         loadProductFormSpecs();
     }
 }

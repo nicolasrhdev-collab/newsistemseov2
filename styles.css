@@ -459,6 +459,15 @@ textarea.form-input:hover:not(:focus) {
     transform: translateX(2px);
 }
 
+/* SEO Form Steps */
+.seo-form-step {
+    display: none;
+}
+
+.seo-form-step.active {
+    display: block;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .modal-content {
