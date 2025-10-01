@@ -159,6 +159,20 @@ main::-webkit-scrollbar-thumb:hover {
     }
 }
 
+/* SEO Modal Full Screen */
+#seoModal {
+    background-color: #f5f5f5;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+}
+
+#seoModal .modal-content {
+    max-width: 1200px;
+    max-height: calc(100vh - 4rem);
+    margin: 0 auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
 /* Product Type Card */
 .product-type-card {
     padding: 1.5rem;
