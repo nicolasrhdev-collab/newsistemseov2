@@ -4,37 +4,52 @@ Servidor HTTP simples para testar o sistema localmente.
 
 ## 📋 Pré-requisitos
 
-- **Python 3.x** instalado no sistema
-  - Windows: [Download Python](https://www.python.org/downloads/)
-  - Linux: `sudo apt-get install python3`
-  - MacOS: `brew install python3`
+Você precisa de **Python 3.x** OU **Node.js** instalado:
+
+### Opção A: Python 3.x
+- Windows: [Download Python](https://www.python.org/downloads/)
+- Linux: `sudo apt-get install python3`
+- MacOS: `brew install python3`
+
+### Opção B: Node.js
+- Qualquer SO: [Download Node.js](https://nodejs.org/)
+- Recomendado: Versão LTS
 
 ## 🎯 Como Usar
 
-### Windows
+### Com Python
 
-**Opção 1 - Script Automático (Recomendado):**
+**Windows:**
 ```bash
 start-server.bat
 ```
-Apenas clique duas vezes no arquivo `start-server.bat`
+Ou clique duas vezes no arquivo `start-server.bat`
 
-**Opção 2 - Manual:**
-```bash
-python server.py
-```
-
-### Linux / MacOS
-
-**Opção 1 - Script Automático:**
+**Linux/Mac:**
 ```bash
 chmod +x start-server.sh
 ./start-server.sh
 ```
 
-**Opção 2 - Manual:**
+**Manual:**
 ```bash
+# Windows/Linux/Mac
+python server.py
+# ou
 python3 server.py
+```
+
+### Com Node.js
+
+**Windows:**
+```bash
+start-server-node.bat
+```
+Ou clique duas vezes no arquivo `start-server-node.bat`
+
+**Linux/Mac/Windows:**
+```bash
+node server.js
 ```
 
 ## 🌐 Acessando o Sistema
