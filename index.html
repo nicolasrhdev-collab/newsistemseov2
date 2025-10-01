@@ -490,7 +490,7 @@
         <div class="modal-content max-w-2xl">
             <div class="px-6 py-5 border-b border-neutral-200">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-neutral-900">Produto Simples</h3>
+                    <h3 class="text-xl font-semibold text-neutral-900">Novo Produto</h3>
                     <button onclick="closeSimpleProductModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -501,6 +501,12 @@
             
             <form id="simpleProductForm" class="px-6 py-6">
                 <input type="hidden" id="simpleProductId">
+                
+                <!-- Tipo de Produto Dropdown -->
+                <div class="mb-6 pb-6 border-b border-neutral-200">
+                    <label class="form-label">Tipo de Produto *</label>
+                    <div id="productTypeDropdownContainer"></div>
+                </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
@@ -594,6 +600,12 @@
             <form id="compositeProductForm" class="px-6 py-6">
                 <input type="hidden" id="compositeProductId">
                 <input type="hidden" id="currentStep" value="1">
+                
+                <!-- Tipo de Produto Dropdown -->
+                <div id="compositeProductTypeSection" class="mb-6 pb-6 border-b border-neutral-200">
+                    <label class="form-label">Tipo de Produto *</label>
+                    <div id="compositeProductTypeDropdownContainer"></div>
+                </div>
                 
                 <!-- Step 1: Informações Básicas -->
                 <div id="step1" class="form-step active">
