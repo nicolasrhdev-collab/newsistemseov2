@@ -1210,12 +1210,444 @@ function filterProductsForSeo() {
 function selectProductForSeo(productId) {
     const product = products.find(p => p.id === productId);
     if (product) {
-        document.getElementById('seoProductId').value = productId;
-        document.getElementById('seoProductName').textContent = `Produto: ${product.name} (${product.sku})`;
+        document.getElementById('seoFormProductId').value = productId;
+        document.getElementById('seoFormProductName').textContent = `Produto: ${product.name} (${product.sku})`;
         closeSelectProductModal();
-        openSeoModal();
+        openSeoForm();
     }
 }
+
+// Open SEO Form Page
+function openSeoForm() {
+    document.getElementById('productsPage').classList.add('hidden');
+    document.getElementById('seoPage').classList.add('hidden');
+    document.getElementById('seoFormPage').classList.remove('hidden');
+    currentSeoStep = 1;
+    secondaryKeywords = [];
+    longTailKeywords = [];
+    renderSecondaryKeywordsForm();
+    renderLongTailKeywordsForm();
+    goToFormStep(1);
+    updateFormPreview();
+}
+
+// Close SEO Form Page
+function closeSeoForm() {
+    document.getElementById('seoFormPage').classList.add('hidden');
+    if (currentPage === 'seo') {
+        document.getElementById('seoPage').classList.remove('hidden');
+    } else {
+        document.getElementById('productsPage').classList.remove('hidden');
+    }
+    document.getElementById('seoFormMain').reset();
+    secondaryKeywords = [];
+    longTailKeywords = [];
+    renderSecondaryKeywordsForm();
+    renderLongTailKeywordsForm();
+    currentSeoStep = 1;
+}
+
+// Form Step Navigation
+function goToFormStep(step) {
+    currentSeoStep = step;
+    
+    // Hide all steps
+    document.querySelectorAll('.seo-form-step').forEach(s => s.classList.remove('active'));
+    
+    // Show current step
+    document.getElementById(`seoFormStep${step}`).classList.add('active');
+    
+    // Update step indicators
+    for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`stepFormBtn${i}`);
+        if (i === step) {
+            btn.classList.remove('bg-neutral-300');
+            btn.classList.add('bg-neutral-900');
+        } else {
+            btn.classList.remove('bg-neutral-900');
+            btn.classList.add('bg-neutral-300');
+        }
+    }
+    
+    // Update navigation buttons
+    const prevBtn = document.getElementById('prevFormStepBtn');
+    const nextBtn = document.getElementById('nextFormStepBtn');
+    const nextStepText = document.getElementById('nextFormStepText');
+    const submitBtn = document.getElementById('submitFormBtn');
+    
+    if (step === 1) {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.remove('hidden');
+        nextStepText.textContent = 'Próxima';
+        submitBtn.classList.add('hidden');
+    } else if (step === 2) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        nextStepText.textContent = 'Próxima';
+        submitBtn.classList.add('hidden');
+    } else if (step === 3) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
+    }
+    
+    // Load product specs when entering step 3
+    if (step === 3) {
+        loadProductFormSpecs();
+    }
+}
+
+function nextFormStep() {
+    if (currentSeoStep < 3) {
+        goToFormStep(currentSeoStep + 1);
+    }
+}
+
+function prevFormStep() {
+    if (currentSeoStep > 1) {
+        goToFormStep(currentSeoStep - 1);
+    }
+}
+
+// Update Form Preview
+function updateFormPreview() {
+    const title = document.getElementById('titleTagFormInput').value || 'Título do Produto | Sua Loja';
+    const description = document.getElementById('metaDescriptionFormInput').value || 'A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.';
+    const slug = document.getElementById('slugFormInput').value || 'slug-do-produto';
+    
+    document.getElementById('previewFormTitle').textContent = title;
+    document.getElementById('previewFormDescription').textContent = description;
+    document.getElementById('previewFormUrl').textContent = `seusite.com.br/produto/${slug}`;
+    
+    // Update character counts
+    document.getElementById('titleFormCount').textContent = document.getElementById('titleTagFormInput').value.length;
+    document.getElementById('descFormCount').textContent = document.getElementById('metaDescriptionFormInput').value.length;
+}
+
+// Load Product Specs for Form
+function loadProductFormSpecs() {
+    const productId = parseInt(document.getElementById('seoFormProductId').value);
+    const product = products.find(p => p.id === productId);
+    const container = document.getElementById('productFormSpecs');
+    
+    if (!product) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Produto não encontrado</p>';
+        return;
+    }
+    
+    let specsHTML = `
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Nome:</span>
+            <span class="text-sm text-neutral-900">${product.name}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">SKU:</span>
+            <span class="text-sm text-neutral-900">${product.sku}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Tipo:</span>
+            <span class="text-sm text-neutral-900">${product.type === 'simples' ? 'Produto Simples' : 'Produto Composto'}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Categoria:</span>
+            <span class="text-sm text-neutral-900">${product.category}</span>
+        </div>
+    `;
+    
+    if (product.type === 'simples') {
+        specsHTML += `
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Peso:</span>
+                <span class="text-sm text-neutral-900">${product.weight} kg</span>
+            </div>
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Valor:</span>
+                <span class="text-sm text-neutral-900">R$ ${product.price}</span>
+            </div>
+        `;
+    } else {
+        specsHTML += `
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Peso Total:</span>
+                <span class="text-sm text-neutral-900">${product.totalWeight} kg</span>
+            </div>
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Valor Total:</span>
+                <span class="text-sm text-neutral-900">R$ ${product.totalPrice}</span>
+            </div>
+        `;
+        
+        if (product.specs) {
+            if (product.specs.brand) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Marca:</span><span class="text-sm text-neutral-900">${product.specs.brand}</span></div>`;
+            if (product.specs.material) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Material:</span><span class="text-sm text-neutral-900">${product.specs.material}</span></div>`;
+            if (product.specs.width) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Largura:</span><span class="text-sm text-neutral-900">${product.specs.width} cm</span></div>`;
+            if (product.specs.height) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Altura:</span><span class="text-sm text-neutral-900">${product.specs.height} cm</span></div>`;
+            if (product.specs.depth) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Profundidade:</span><span class="text-sm text-neutral-900">${product.specs.depth} cm</span></div>`;
+            if (product.specs.metalonType) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Tipo Metalon:</span><span class="text-sm text-neutral-900">${product.specs.metalonType}</span></div>`;
+            if (product.specs.capacity) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Capacidade:</span><span class="text-sm text-neutral-900">${product.specs.capacity}</span></div>`;
+            if (product.specs.assembly) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Montagem:</span><span class="text-sm text-neutral-900">${product.specs.assembly}</span></div>`;
+        }
+    }
+    
+    container.innerHTML = specsHTML;
+    updateFormSchemaPreview();
+}
+
+// Update Form Schema Preview
+function updateFormSchemaPreview() {
+    const schemaType = document.getElementById('schemaTypeFormSelect').value;
+    const productId = parseInt(document.getElementById('seoFormProductId').value);
+    const product = products.find(p => p.id === productId);
+    const previewElement = document.getElementById('schemaFormPreview');
+    
+    if (!schemaType) {
+        previewElement.textContent = 'Selecione um tipo de schema para visualizar';
+        return;
+    }
+    
+    if (!product) {
+        previewElement.textContent = 'Produto não encontrado';
+        return;
+    }
+    
+    const titleTag = document.getElementById('titleTagFormInput').value || product.name;
+    const metaDesc = document.getElementById('metaDescriptionFormInput').value || '';
+    const slug = document.getElementById('slugFormInput').value || product.sku.toLowerCase();
+    
+    let schema = {};
+    
+    switch(schemaType) {
+        case 'Product':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.name,
+                "sku": product.sku,
+                "description": metaDesc,
+                "category": product.category,
+                "offers": {
+                    "@type": "Offer",
+                    "price": product.price || product.totalPrice,
+                    "priceCurrency": "BRL",
+                    "availability": "https://schema.org/InStock",
+                    "url": `https://seusite.com.br/produto/${slug}`
+                }
+            };
+            break;
+        case 'Offer':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Offer",
+                "name": product.name,
+                "price": product.price || product.totalPrice,
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "url": `https://seusite.com.br/produto/${slug}`
+            };
+            break;
+        case 'Review':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Review",
+                "itemReviewed": {
+                    "@type": "Product",
+                    "name": product.name,
+                    "sku": product.sku
+                },
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5"
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Cliente"
+                }
+            };
+            break;
+        case 'AggregateRating':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "AggregateRating",
+                "itemReviewed": {
+                    "@type": "Product",
+                    "name": product.name,
+                    "sku": product.sku
+                },
+                "ratingValue": "4.5",
+                "reviewCount": "89"
+            };
+            break;
+        case 'FAQPage':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "FAQPage",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": `Como usar ${product.name}?`,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Instruções de uso do produto..."
+                    }
+                }]
+            };
+            break;
+        case 'BreadcrumbList':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://seusite.com.br"
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": product.category,
+                    "item": `https://seusite.com.br/${product.category.toLowerCase()}`
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": product.name,
+                    "item": `https://seusite.com.br/produto/${slug}`
+                }]
+            };
+            break;
+    }
+    
+    previewElement.textContent = JSON.stringify(schema, null, 2);
+}
+
+// Form Keywords Functions
+function addSecondaryKeywordForm() {
+    const input = document.getElementById('secondaryKeywordFormInput');
+    const keyword = input.value.trim();
+    
+    if (keyword && !secondaryKeywords.includes(keyword)) {
+        secondaryKeywords.push(keyword);
+        input.value = '';
+        renderSecondaryKeywordsForm();
+    }
+}
+
+function handleSecondaryKeywordFormEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addSecondaryKeywordForm();
+    }
+}
+
+function removeSecondaryKeywordForm(keyword) {
+    secondaryKeywords = secondaryKeywords.filter(k => k !== keyword);
+    renderSecondaryKeywordsForm();
+}
+
+function renderSecondaryKeywordsForm() {
+    const container = document.getElementById('secondaryKeywordsFormContainer');
+    
+    if (secondaryKeywords.length === 0) {
+        container.innerHTML = '';
+    } else {
+        container.innerHTML = secondaryKeywords.map(keyword => `
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-800 text-sm rounded-lg">
+                ${keyword}
+                <button type="button" onclick="removeSecondaryKeywordForm('${keyword}')" class="hover:text-red-600 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+    }
+}
+
+function addLongTailKeywordForm() {
+    const input = document.getElementById('longTailKeywordFormInput');
+    const keyword = input.value.trim();
+    
+    if (keyword && !longTailKeywords.includes(keyword)) {
+        longTailKeywords.push(keyword);
+        input.value = '';
+        renderLongTailKeywordsForm();
+    }
+}
+
+function handleLongTailKeywordFormEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addLongTailKeywordForm();
+    }
+}
+
+function removeLongTailKeywordForm(keyword) {
+    longTailKeywords = longTailKeywords.filter(k => k !== keyword);
+    renderLongTailKeywordsForm();
+}
+
+function renderLongTailKeywordsForm() {
+    const container = document.getElementById('longTailKeywordsFormContainer');
+    
+    if (longTailKeywords.length === 0) {
+        container.innerHTML = '';
+    } else {
+        container.innerHTML = longTailKeywords.map(keyword => `
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-100 text-purple-800 text-sm rounded-lg">
+                ${keyword}
+                <button type="button" onclick="removeLongTailKeywordForm('${keyword}')" class="hover:text-red-600 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+    }
+}
+
+// Save SEO from Form
+document.getElementById('seoFormMain').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const productId = parseInt(document.getElementById('seoFormProductId').value);
+    const mainKeyword = document.getElementById('mainKeywordFormInput').value.trim();
+    const titleTag = document.getElementById('titleTagFormInput').value.trim();
+    const metaDescription = document.getElementById('metaDescriptionFormInput').value.trim();
+    const slug = document.getElementById('slugFormInput').value.trim();
+    const schemaType = document.getElementById('schemaTypeFormSelect').value;
+    
+    if (!mainKeyword) {
+        alert('Adicione a palavra-chave principal!');
+        return;
+    }
+    
+    if (!titleTag || !metaDescription || !slug) {
+        alert('Preencha todos os campos obrigatórios da etapa 2!');
+        return;
+    }
+    
+    if (!schemaType) {
+        alert('Selecione um tipo de schema na etapa 3!');
+        return;
+    }
+    
+    const newId = seoData.length > 0 ? Math.max(...seoData.map(s => s.id)) + 1 : 1;
+    
+    seoData.push({
+        id: newId,
+        productId: productId,
+        mainKeyword: mainKeyword,
+        secondaryKeywords: [...secondaryKeywords],
+        longTailKeywords: [...longTailKeywords],
+        titleTag: titleTag,
+        metaDescription: metaDescription,
+        slug: slug,
+        schemaType: schemaType
+    });
+    
+    localStorage.setItem('seoData', JSON.stringify(seoData));
+    renderSeoList();
+    closeSeoForm();
+});
 
 // Open SEO modal
 function openSeoModal() {

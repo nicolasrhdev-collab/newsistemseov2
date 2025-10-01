@@ -293,6 +293,15 @@ button:active {
     display: block;
 }
 
+/* SEO Form Steps */
+.seo-form-step {
+    display: none;
+}
+
+.seo-form-step.active {
+    display: block;
+}
+
 /* Textarea */
 textarea.form-input {
     font-family: inherit;
