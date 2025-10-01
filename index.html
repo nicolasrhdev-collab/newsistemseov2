@@ -637,29 +637,67 @@
                 
                 <!-- Etapa 1: Palavras-chave -->
                 <div id="seoStep1" class="seo-step active">
-                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Palavras-chave</h4>
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Palavras-chave</h4>
                     
-                    <div class="mb-4">
-                        <label class="form-label">Adicionar Palavras-chave</label>
-                        <div class="flex gap-2">
+                    <!-- Palavra-chave Principal -->
+                    <div class="mb-6">
+                        <label class="form-label">Palavra-chave Principal *</label>
+                        <input 
+                            type="text" 
+                            id="mainKeywordInput" 
+                            placeholder="Digite a palavra-chave principal"
+                            class="form-input"
+                            required>
+                        <p class="text-xs text-neutral-500 mt-1">A palavra-chave mais importante do produto</p>
+                    </div>
+                    
+                    <!-- Palavras-chave Secundárias -->
+                    <div class="mb-6">
+                        <label class="form-label">Palavras-chave Secundárias</label>
+                        <div class="flex gap-2 mb-2">
                             <input 
                                 type="text" 
-                                id="keywordInput" 
-                                placeholder="Digite uma palavra-chave e pressione Enter"
+                                id="secondaryKeywordInput" 
+                                placeholder="Digite e pressione Enter"
                                 class="form-input flex-1"
-                                onkeypress="handleKeywordEnter(event)">
-                            <button type="button" onclick="addKeyword()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                onkeypress="handleSecondaryKeywordEnter(event)">
+                            <button type="button" onclick="addSecondaryKeyword()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
                                 Adicionar
                             </button>
                         </div>
+                        <div id="secondaryKeywordsContainer" class="flex flex-wrap gap-2 mb-2 min-h-[32px]">
+                            <!-- Secondary keywords tags will be inserted here -->
+                        </div>
+                        <p class="text-xs text-neutral-500">Palavras-chave relacionadas e variações</p>
                     </div>
                     
-                    <div id="keywordsContainer" class="flex flex-wrap gap-2 mb-4">
-                        <!-- Keywords tags will be inserted here -->
+                    <!-- Palavras-chave de Cauda Longa -->
+                    <div class="mb-4">
+                        <label class="form-label">Palavras-chave de Cauda Longa</label>
+                        <div class="flex gap-2 mb-2">
+                            <input 
+                                type="text" 
+                                id="longTailKeywordInput" 
+                                placeholder="Digite frases mais específicas e pressione Enter"
+                                class="form-input flex-1"
+                                onkeypress="handleLongTailKeywordEnter(event)">
+                            <button type="button" onclick="addLongTailKeyword()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                Adicionar
+                            </button>
+                        </div>
+                        <div id="longTailKeywordsContainer" class="flex flex-wrap gap-2 mb-2 min-h-[32px]">
+                            <!-- Long tail keywords tags will be inserted here -->
+                        </div>
+                        <p class="text-xs text-neutral-500">Frases mais específicas (ex: "mesa de escritório home office branca")</p>
                     </div>
                     
-                    <div class="text-sm text-neutral-500">
-                        <p>💡 Dica: Adicione palavras-chave relevantes para otimizar o SEO do produto</p>
+                    <div class="text-sm text-neutral-500 bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+                        <p class="font-medium text-blue-900 mb-1">💡 Dicas de SEO:</p>
+                        <ul class="text-xs space-y-1 text-blue-800 ml-4 list-disc">
+                            <li>Use a palavra-chave principal no título e descrição</li>
+                            <li>Secundárias são variações e sinônimos relevantes</li>
+                            <li>Cauda longa são frases específicas com menor concorrência</li>
+                        </ul>
                     </div>
                 </div>
 

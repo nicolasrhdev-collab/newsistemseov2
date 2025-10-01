@@ -83,7 +83,8 @@ let packageCounter = 0;
 let currentEditId = null;
 let currentView = 'todos'; // todos, simples, composto
 let currentPage = 'produtos'; // produtos, seo
-let keywords = [];
+let secondaryKeywords = [];
+let longTailKeywords = [];
 let seoData = JSON.parse(localStorage.getItem('seoData')) || [];
 
 // Render products
@@ -1120,17 +1121,25 @@ function renderSeoList() {
                     </div>
                     
                     <div class="mb-3">
-                        <p class="text-xs text-neutral-500 mb-2">Palavras-chave:</p>
+                        <p class="text-xs text-neutral-500 mb-2">Principal:</p>
+                        <div class="mb-2">
+                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded font-medium">${seo.mainKeyword}</span>
+                        </div>
+                        ${seo.secondaryKeywords && seo.secondaryKeywords.length > 0 ? `
+                        <p class="text-xs text-neutral-500 mb-1 mt-2">Secundárias:</p>
                         <div class="flex flex-wrap gap-1">
-                            ${seo.keywords.slice(0, 3).map(keyword => `
+                            ${seo.secondaryKeywords.slice(0, 2).map(keyword => `
                                 <span class="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded">${keyword}</span>
                             `).join('')}
-                            ${seo.keywords.length > 3 ? `<span class="px-2 py-1 text-neutral-500 text-xs">+${seo.keywords.length - 3}</span>` : ''}
+                            ${seo.secondaryKeywords.length > 2 ? `<span class="px-2 py-1 text-neutral-500 text-xs">+${seo.secondaryKeywords.length - 2}</span>` : ''}
                         </div>
+                        ` : ''}
                     </div>
                     
                     <div class="flex items-center justify-between pt-3 border-t border-neutral-100">
-                        <span class="text-xs text-neutral-500">${seo.keywords.length} palavras-chave</span>
+                        <span class="text-xs text-neutral-500">
+                            ${(seo.secondaryKeywords?.length || 0) + (seo.longTailKeywords?.length || 0) + 1} palavras-chave
+                        </span>
                         <div class="flex gap-1">
                             <button onclick="editSeo(${seo.id})" class="p-1.5 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1211,8 +1220,10 @@ function selectProductForSeo(productId) {
 function openSeoModal() {
     const modal = document.getElementById('seoModal');
     modal.classList.add('active');
-    keywords = [];
-    renderKeywords();
+    secondaryKeywords = [];
+    longTailKeywords = [];
+    renderSecondaryKeywords();
+    renderLongTailKeywords();
 }
 
 // Close SEO modal
@@ -1220,47 +1231,95 @@ function closeSeoModal() {
     const modal = document.getElementById('seoModal');
     modal.classList.remove('active');
     document.getElementById('seoForm').reset();
-    keywords = [];
-    renderKeywords();
+    secondaryKeywords = [];
+    longTailKeywords = [];
+    renderSecondaryKeywords();
+    renderLongTailKeywords();
 }
 
-// Add keyword
-function addKeyword() {
-    const input = document.getElementById('keywordInput');
+// Add secondary keyword
+function addSecondaryKeyword() {
+    const input = document.getElementById('secondaryKeywordInput');
     const keyword = input.value.trim();
     
-    if (keyword && !keywords.includes(keyword)) {
-        keywords.push(keyword);
+    if (keyword && !secondaryKeywords.includes(keyword)) {
+        secondaryKeywords.push(keyword);
         input.value = '';
-        renderKeywords();
+        renderSecondaryKeywords();
     }
 }
 
-// Handle Enter key on keyword input
-function handleKeywordEnter(event) {
+// Handle Enter key on secondary keyword input
+function handleSecondaryKeywordEnter(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        addKeyword();
+        addSecondaryKeyword();
     }
 }
 
-// Remove keyword
-function removeKeyword(keyword) {
-    keywords = keywords.filter(k => k !== keyword);
-    renderKeywords();
+// Remove secondary keyword
+function removeSecondaryKeyword(keyword) {
+    secondaryKeywords = secondaryKeywords.filter(k => k !== keyword);
+    renderSecondaryKeywords();
 }
 
-// Render keywords
-function renderKeywords() {
-    const container = document.getElementById('keywordsContainer');
+// Render secondary keywords
+function renderSecondaryKeywords() {
+    const container = document.getElementById('secondaryKeywordsContainer');
     
-    if (keywords.length === 0) {
-        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave adicionada ainda</p>';
+    if (secondaryKeywords.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave secundária adicionada</p>';
     } else {
-        container.innerHTML = keywords.map(keyword => `
-            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-900 text-white text-sm rounded-lg">
+        container.innerHTML = secondaryKeywords.map(keyword => `
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-800 text-sm rounded-lg">
                 ${keyword}
-                <button type="button" onclick="removeKeyword('${keyword}')" class="hover:text-red-300 transition-colors">
+                <button type="button" onclick="removeSecondaryKeyword('${keyword}')" class="hover:text-red-600 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+    }
+}
+
+// Add long tail keyword
+function addLongTailKeyword() {
+    const input = document.getElementById('longTailKeywordInput');
+    const keyword = input.value.trim();
+    
+    if (keyword && !longTailKeywords.includes(keyword)) {
+        longTailKeywords.push(keyword);
+        input.value = '';
+        renderLongTailKeywords();
+    }
+}
+
+// Handle Enter key on long tail keyword input
+function handleLongTailKeywordEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addLongTailKeyword();
+    }
+}
+
+// Remove long tail keyword
+function removeLongTailKeyword(keyword) {
+    longTailKeywords = longTailKeywords.filter(k => k !== keyword);
+    renderLongTailKeywords();
+}
+
+// Render long tail keywords
+function renderLongTailKeywords() {
+    const container = document.getElementById('longTailKeywordsContainer');
+    
+    if (longTailKeywords.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave de cauda longa adicionada</p>';
+    } else {
+        container.innerHTML = longTailKeywords.map(keyword => `
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-100 text-purple-800 text-sm rounded-lg">
+                ${keyword}
+                <button type="button" onclick="removeLongTailKeyword('${keyword}')" class="hover:text-red-600 transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -1275,9 +1334,10 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const productId = parseInt(document.getElementById('seoProductId').value);
+    const mainKeyword = document.getElementById('mainKeywordInput').value.trim();
     
-    if (keywords.length === 0) {
-        alert('Adicione pelo menos uma palavra-chave!');
+    if (!mainKeyword) {
+        alert('Adicione a palavra-chave principal!');
         return;
     }
     
@@ -1286,7 +1346,9 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
     seoData.push({
         id: newId,
         productId: productId,
-        keywords: [...keywords]
+        mainKeyword: mainKeyword,
+        secondaryKeywords: [...secondaryKeywords],
+        longTailKeywords: [...longTailKeywords]
     });
     
     localStorage.setItem('seoData', JSON.stringify(seoData));
