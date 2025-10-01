@@ -2,6 +2,22 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
+/* Ensure pages take full height */
+#productsPage,
+#seoPage,
+#utilitiesPage {
+    min-height: 100%;
+}
+
+/* Fix for utilities empty state */
+#utilitiesPage.flex {
+    display: flex !important;
+}
+
+#emptyStateLinks.flex {
+    display: flex !important;
+}
+
 /* Sidebar Styles */
 aside {
     min-height: 100vh;
