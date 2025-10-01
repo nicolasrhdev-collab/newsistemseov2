@@ -1282,12 +1282,6 @@ function goToStep(step) {
 
 function nextStep() {
     if (currentSeoStep < 2) {
-        // Validate current step
-        const mainKeyword = document.getElementById('mainKeywordInput').value.trim();
-        if (!mainKeyword) {
-            alert('Preencha a palavra-chave principal!');
-            return;
-        }
         goToStep(currentSeoStep + 1);
     }
 }

@@ -646,8 +646,7 @@
                             type="text" 
                             id="mainKeywordInput" 
                             placeholder="Digite a palavra-chave principal"
-                            class="form-input"
-                            required>
+                            class="form-input">
                     </div>
                     
                     <!-- Palavras-chave Secundárias -->
@@ -659,13 +658,13 @@
                             placeholder="Pressione Enter para adicionar"
                             class="form-input"
                             onkeypress="handleSecondaryKeywordEnter(event)">
-                        <div id="secondaryKeywordsContainer" class="flex flex-wrap gap-2 mt-2 min-h-[32px]">
+                        <div id="secondaryKeywordsContainer" class="flex flex-wrap gap-2 mt-2.5 min-h-[32px]">
                             <!-- Secondary keywords tags will be inserted here -->
                         </div>
                     </div>
                     
                     <!-- Palavras-chave de Cauda Longa -->
-                    <div class="mb-6">
+                    <div>
                         <label class="form-label">Palavras-chave de Cauda Longa</label>
                         <input 
                             type="text" 
@@ -673,7 +672,7 @@
                             placeholder="Pressione Enter para adicionar"
                             class="form-input"
                             onkeypress="handleLongTailKeywordEnter(event)">
-                        <div id="longTailKeywordsContainer" class="flex flex-wrap gap-2 mt-2 min-h-[32px]">
+                        <div id="longTailKeywordsContainer" class="flex flex-wrap gap-2 mt-2.5 min-h-[32px]">
                             <!-- Long tail keywords tags will be inserted here -->
                         </div>
                     </div>
@@ -683,7 +682,7 @@
                 <div id="seoStep2" class="seo-step">
                     <h4 class="text-lg font-semibold text-neutral-900 mb-6">Meta Tags</h4>
                     
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-2 gap-8">
                         <!-- Formulário -->
                         <div>
                             <!-- Title Tag -->
@@ -695,9 +694,8 @@
                                     placeholder="Digite o título da página"
                                     class="form-input"
                                     maxlength="60"
-                                    oninput="updatePreview()"
-                                    required>
-                                <p class="text-xs text-neutral-500 mt-1"><span id="titleCount">0</span>/60 caracteres</p>
+                                    oninput="updatePreview()">
+                                <p class="text-xs text-neutral-500 mt-1.5"><span id="titleCount">0</span>/60 caracteres</p>
                             </div>
                             
                             <!-- Meta Description -->
@@ -707,42 +705,40 @@
                                     id="metaDescriptionInput" 
                                     placeholder="Digite a descrição da página"
                                     class="form-input resize-none"
-                                    rows="3"
+                                    rows="4"
                                     maxlength="160"
-                                    oninput="updatePreview()"
-                                    required></textarea>
-                                <p class="text-xs text-neutral-500 mt-1"><span id="descCount">0</span>/160 caracteres</p>
+                                    oninput="updatePreview()"></textarea>
+                                <p class="text-xs text-neutral-500 mt-1.5"><span id="descCount">0</span>/160 caracteres</p>
                             </div>
                             
                             <!-- Slug -->
-                            <div class="mb-6">
+                            <div>
                                 <label class="form-label">Slug *</label>
                                 <input 
                                     type="text" 
                                     id="slugInput" 
                                     placeholder="digite-o-slug-da-url"
                                     class="form-input"
-                                    oninput="updatePreview()"
-                                    required>
-                                <p class="text-xs text-neutral-500 mt-1">URL amigável para SEO</p>
+                                    oninput="updatePreview()">
+                                <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
                             </div>
                         </div>
                         
                         <!-- Preview -->
                         <div>
                             <label class="form-label">Preview Google</label>
-                            <div class="border border-neutral-200 rounded-lg p-4 bg-white">
-                                <div class="mb-1">
-                                    <p class="text-xs text-neutral-500" id="previewUrl">seusite.com.br/produto/slug-do-produto</p>
+                            <div class="border border-neutral-200 rounded-lg p-5 bg-white shadow-sm">
+                                <div class="mb-2">
+                                    <p class="text-xs text-green-700" id="previewUrl">seusite.com.br/produto/slug-do-produto</p>
                                 </div>
                                 <div class="mb-2">
-                                    <h3 class="text-lg text-blue-700 font-medium hover:underline cursor-pointer" id="previewTitle">Título do Produto | Sua Loja</h3>
+                                    <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewTitle">Título do Produto | Sua Loja</h3>
                                 </div>
                                 <div>
-                                    <p class="text-sm text-neutral-600 leading-relaxed" id="previewDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                    <p class="text-sm text-neutral-700 leading-relaxed" id="previewDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
                                 </div>
                             </div>
-                            <p class="text-xs text-neutral-500 mt-2">Preview aproximado do resultado no Google</p>
+                            <p class="text-xs text-neutral-500 mt-3">Preview aproximado do resultado no Google</p>
                         </div>
                     </div>
                 </div>
