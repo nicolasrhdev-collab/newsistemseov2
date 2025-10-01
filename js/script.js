@@ -366,6 +366,9 @@ function openCompositeProductModal(productId = null) {
     document.getElementById('componentsContainer').innerHTML = '';
     document.getElementById('packagesContainer').innerHTML = '';
     
+    // Initialize status dropdown
+    initializeStatusDropdowns();
+    
     // Initialize product type dropdown (only for new products)
     if (!productId) {
         document.getElementById('compositeProductTypeDropdownContainer').innerHTML = createCustomDropdown(
@@ -376,6 +379,10 @@ function openCompositeProductModal(productId = null) {
         );
         // Show dropdown when creating new
         document.getElementById('compositeProductTypeSection').style.display = 'block';
+        
+        // Reset todos for new product
+        currentCompositeTodos = [];
+        document.getElementById('compositeProductTodos').classList.add('hidden');
     }
     
     if (productId) {
@@ -430,6 +437,16 @@ function loadCompositeProduct(product) {
     if (product.packages && product.packages.length > 0) {
         product.packages.forEach(pkg => addPackage(pkg));
     }
+    
+    // Load status and todos
+    if (product.status) {
+        setCustomDropdownValue('compositeStatusDropdown', product.status);
+        if (product.status === 'Incompleto' || product.status === 'Pendente') {
+            document.getElementById('compositeProductTodos').classList.remove('hidden');
+        }
+    }
+    currentCompositeTodos = product.todos || [];
+    renderCompositeProductTodos();
 }
 
 function closeCompositeProductModal() {
@@ -442,7 +459,7 @@ function closeCompositeProductModal() {
 // Step Navigation
 function nextStep() {
     const currentStep = parseInt(document.getElementById('currentStep').value);
-    if (currentStep < 4) {
+    if (currentStep < 5) {
         goToStep(currentStep + 1);
     }
 }
@@ -488,7 +505,7 @@ function goToStep(stepNumber) {
         prevBtn.style.display = 'block';
     }
     
-    if (stepNumber === 4) {
+    if (stepNumber === 5) {
         nextBtn.style.display = 'none';
         submitBtn.style.display = 'block';
     } else {
@@ -795,7 +812,9 @@ document.getElementById('compositeProductForm').addEventListener('submit', funct
             capacity: document.getElementById('specCapacity').value,
             assembly: document.getElementById('specAssembly').value
         },
-        packages: getPackages()
+        packages: getPackages(),
+        status: getCustomDropdownValue('compositeStatusDropdown') || 'Concluído',
+        todos: currentCompositeTodos
     };
     
     if (currentEditId) {
@@ -809,6 +828,9 @@ document.getElementById('compositeProductForm').addEventListener('submit', funct
     localStorage.setItem('products', JSON.stringify(products));
     renderProducts();
     closeCompositeProductModal();
+    
+    // Reset todos
+    currentCompositeTodos = [];
 });
 
 // Edit product
@@ -1311,6 +1333,13 @@ function openSeoForm() {
     const genderOptions = ['Masculino', 'Feminino', 'Unissex'];
     document.getElementById('genderSelectContainer').innerHTML = createCustomDropdown('genderDropdown', genderOptions, '', 'Selecione');
     
+    // Initialize status dropdown
+    initializeStatusDropdowns();
+    
+    // Reset todos for new SEO
+    currentSeoTodos = [];
+    document.getElementById('seoTodos').classList.add('hidden');
+    
     goToFormStep(1);
     updateFormPreview();
 }
@@ -1330,6 +1359,7 @@ function closeSeoForm() {
     uses = [];
     faqs = [];
     extraSchemaFields = [];
+    currentSeoTodos = [];
     renderSecondaryKeywordsForm();
     renderLongTailKeywordsForm();
     currentSeoStep = 1;
@@ -2133,12 +2163,17 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
         benefits: [...benefits],
         uses: [...uses],
         warnings: warnings,
-        faqs: [...faqs]
+        faqs: [...faqs],
+        status: getCustomDropdownValue('seoStatusDropdown') || 'Concluído',
+        todos: currentSeoTodos
     });
     
     localStorage.setItem('seoData', JSON.stringify(seoData));
     renderSeoList();
     closeSeoForm();
+    
+    // Reset todos
+    currentSeoTodos = [];
 });
 
 
