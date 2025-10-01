@@ -10,13 +10,7 @@ body {
 }
 
 /* Fix for utilities empty state */
-#utilitiesPage.flex {
-    display: flex !important;
-}
-
-#emptyStateLinks.flex {
-    display: flex !important;
-}
+/* Removed force display that conflicted with Tailwind's hidden class */
 
 /* Sidebar Styles */
 aside {
