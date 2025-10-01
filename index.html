@@ -215,10 +215,10 @@
                         <!-- Etapa 1: Palavras-chave -->
                         <div id="seoFormStep1" class="seo-form-step active">
                             <!-- Seção 1: Palavras-chave -->
-                            <div class="mb-8 pb-8 border-b border-neutral-200">
-                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Palavras-chave</h3>
+                            <div class="mb-10 pb-8 border-b border-neutral-200">
+                                <h3 class="text-lg font-semibold text-neutral-900 mb-5">Palavras-chave</h3>
                                 
-                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
                                     <!-- Palavra-chave Principal -->
                                     <div>
                                         <label class="form-label">Palavra-chave Principal *</label>
@@ -229,23 +229,23 @@
                                     <div>
                                         <label class="form-label">Palavras-chave Secundárias</label>
                                         <input type="text" id="secondaryKeywordFormInput" placeholder="Pressione Enter para adicionar" class="form-input" onkeypress="handleSecondaryKeywordFormEnter(event)">
-                                        <div id="secondaryKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2.5"></div>
+                                        <div id="secondaryKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2"></div>
                                     </div>
                                     
                                     <!-- Palavras-chave de Cauda Longa -->
                                     <div>
                                         <label class="form-label">Palavras-chave de Cauda Longa</label>
                                         <input type="text" id="longTailKeywordFormInput" placeholder="Pressione Enter para adicionar" class="form-input" onkeypress="handleLongTailKeywordFormEnter(event)">
-                                        <div id="longTailKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2.5"></div>
+                                        <div id="longTailKeywordsFormContainer" class="flex flex-wrap gap-2 mt-2"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Seção 2: Público e Segmentação -->
-                            <div class="mb-8 pb-8 border-b border-neutral-200">
-                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Público e Segmentação</h3>
+                            <div class="mb-10 pb-8 border-b border-neutral-200">
+                                <h3 class="text-lg font-semibold text-neutral-900 mb-5">Público e Segmentação</h3>
                                 
-                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
                                     <!-- Público Alvo -->
                                     <div>
                                         <label class="form-label">Público Alvo *</label>
@@ -265,7 +265,7 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                                     <!-- Sexo -->
                                     <div>
                                         <label class="form-label">Sexo</label>
@@ -280,47 +280,47 @@
                                     <!-- Valor do Produto (Dados Financeiros) -->
                                     <div>
                                         <label class="form-label">Valor do Produto</label>
-                                        <input type="text" id="productValueInput" placeholder="R$ 0,00" class="form-input" readonly>
-                                        <p class="text-xs text-neutral-500 mt-1.5">Valor do produto selecionado</p>
+                                        <input type="text" id="productValueInput" placeholder="R$ 0,00" class="form-input bg-neutral-50" readonly>
+                                        <p class="text-xs text-neutral-500 mt-1">Valor do produto selecionado</p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Seção 3: Meta Tags -->
                             <div class="mb-8">
-                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Meta Tags</h3>
+                                <h3 class="text-lg font-semibold text-neutral-900 mb-5">Meta Tags</h3>
                                 
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     <!-- Campos de entrada -->
-                                    <div class="space-y-6">
+                                    <div class="space-y-5">
                                         <div>
                                             <label class="form-label">Title Tag *</label>
                                             <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
-                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
+                                            <p class="text-xs text-neutral-500 mt-1"><span id="titleFormCount">0</span>/60 caracteres</p>
                                         </div>
                                         
                                         <div>
                                             <label class="form-label">Meta Description *</label>
                                             <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
-                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
+                                            <p class="text-xs text-neutral-500 mt-1"><span id="descFormCount">0</span>/160 caracteres</p>
                                         </div>
                                         
                                         <div>
                                             <label class="form-label">Slug *</label>
                                             <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
-                                            <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
+                                            <p class="text-xs text-neutral-500 mt-1">URL amigável para SEO</p>
                                         </div>
                                     </div>
                                     
                                     <!-- Preview Google -->
                                     <div class="flex flex-col">
                                         <label class="form-label">Preview Google</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 flex-1 flex items-center">
+                                        <div class="border border-neutral-200 rounded-lg p-5 bg-neutral-50 flex-1 flex items-center">
                                             <div class="w-full">
-                                                <div class="mb-3">
+                                                <div class="mb-2.5">
                                                     <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
                                                 </div>
-                                                <div class="mb-3">
+                                                <div class="mb-2.5">
                                                     <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
                                                 </div>
                                                 <div>
@@ -335,14 +335,14 @@
 
                         <!-- Etapa 2: Schema -->
                         <div id="seoFormStep2" class="seo-form-step">
-                            <div class="mb-8 pb-8">
-                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Schema</h3>
+                            <div class="mb-8">
+                                <h3 class="text-lg font-semibold text-neutral-900 mb-5">Schema</h3>
                                 
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     <!-- Dados do Produto -->
                                     <div>
                                         <label class="form-label">Dados do Produto</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 space-y-4">
+                                        <div class="border border-neutral-200 rounded-lg p-5 bg-neutral-50 space-y-3 max-h-96 overflow-y-auto">
                                             <div id="productFormSpecsInputs"></div>
                                         </div>
                                     </div>
@@ -351,7 +351,7 @@
                                     <div>
                                         <label class="form-label">Tipo de Schema *</label>
                                         <input type="text" id="schemaTypeInput" placeholder="Ex: Product, Offer, Review" class="form-input">
-                                        <p class="text-xs text-neutral-500 mt-1.5">Digite o tipo de schema desejado</p>
+                                        <p class="text-xs text-neutral-500 mt-1">Digite o tipo de schema desejado</p>
                                     </div>
                                 </div>
                             </div>
@@ -359,11 +359,11 @@
 
                         <!-- Etapa 3: Conteúdo -->
                         <div id="seoFormStep3" class="seo-form-step">
-                            <div class="mb-8 pb-8">
+                            <div class="mb-8">
                                 <!-- H1 e H2 -->
-                                <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Títulos</h3>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="mb-10 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Títulos</h3>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                                         <div>
                                             <label class="form-label">H1 *</label>
                                             <input type="text" id="h1Input" placeholder="Título principal da página" class="form-input">
@@ -376,51 +376,51 @@
                                 </div>
 
                                 <!-- Benefícios -->
-                                <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Benefícios</h3>
+                                <div class="mb-10 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Benefícios</h3>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newBenefitInput" placeholder="Adicionar novo benefício" class="form-input flex-1">
-                                        <button type="button" onclick="addBenefitFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                        <button type="button" onclick="addBenefitFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
                                             <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </button>
                                     </div>
-                                    <div id="benefitsContainer" class="space-y-4"></div>
+                                    <div id="benefitsContainer" class="space-y-3"></div>
                                 </div>
 
                                 <!-- Possíveis Usos -->
-                                <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Possíveis Usos</h3>
+                                <div class="mb-10 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Possíveis Usos</h3>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newUseInput" placeholder="Adicionar novo uso" class="form-input flex-1">
-                                        <button type="button" onclick="addUseFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                        <button type="button" onclick="addUseFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
                                             <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </button>
                                     </div>
-                                    <div id="usesContainer" class="space-y-4"></div>
+                                    <div id="usesContainer" class="space-y-3"></div>
                                 </div>
 
                                 <!-- Avisos -->
-                                <div class="mb-8 pb-8 border-b border-neutral-200">
-                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Avisos do Produto</h3>
+                                <div class="mb-10 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Avisos do Produto</h3>
                                     <textarea id="warningsInput" placeholder="Digite avisos importantes sobre o produto (opcional)" class="form-input resize-none" rows="4"></textarea>
                                 </div>
 
                                 <!-- Perguntas Frequentes -->
                                 <div class="mb-8">
-                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Perguntas Frequentes</h3>
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Perguntas Frequentes</h3>
                                     <div class="flex gap-2 mb-4">
                                         <input type="text" id="newFAQInput" placeholder="Adicionar nova pergunta" class="form-input flex-1">
-                                        <button type="button" onclick="addFAQFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all">
+                                        <button type="button" onclick="addFAQFromInput()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
                                             <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                             </svg>
                                         </button>
                                     </div>
-                                    <div id="faqContainer" class="space-y-4"></div>
+                                    <div id="faqContainer" class="space-y-3"></div>
                                 </div>
                             </div>
                         </div>
