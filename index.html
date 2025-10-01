@@ -675,14 +675,14 @@
                 <input type="hidden" id="compositeProductId">
                 <input type="hidden" id="currentStep" value="1">
                 
-                <!-- Tipo de Produto Dropdown -->
-                <div id="compositeProductTypeSection" class="mb-6 pb-6 border-b border-neutral-200">
-                    <label class="form-label">Tipo de Produto *</label>
-                    <div id="compositeProductTypeDropdownContainer"></div>
-                </div>
-                
                 <!-- Step 1: Informações Básicas -->
                 <div id="step1" class="form-step active">
+                    <!-- Tipo de Produto Dropdown -->
+                    <div id="compositeProductTypeSection" class="mb-6 pb-6 border-b border-neutral-200">
+                        <label class="form-label">Tipo de Produto *</label>
+                        <div id="compositeProductTypeDropdownContainer"></div>
+                    </div>
+                    
                     <h4 class="text-lg font-semibold text-neutral-900 mb-4">Informações Básicas</h4>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -904,7 +904,7 @@
                 </div>
 
                 <!-- Step 5: Status -->
-                <div id="step5" class="step-content" style="display: none;">
+                <div id="step5" class="form-step">
                     <h4 class="text-sm font-semibold text-neutral-900 mb-4">Status do Produto</h4>
                     
                     <div class="mb-4">
