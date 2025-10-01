@@ -196,14 +196,14 @@
 
                 <!-- SEO Form Page -->
                 <div id="seoFormPage" class="hidden">
-                    <div class="max-w-6xl mx-auto">
+                    <div class="max-w-6xl mx-auto px-4 sm:px-6">
                         <!-- Header -->
-                        <div class="mb-6 flex items-center justify-between">
-                            <div>
-                                <h2 class="text-2xl font-semibold text-neutral-900">Cadastro de SEO</h2>
-                                <p id="seoFormProductName" class="text-sm text-neutral-500 mt-1"></p>
+                        <div class="mb-6 flex items-center justify-between gap-4">
+                            <div class="min-w-0 flex-1">
+                                <h2 class="text-xl sm:text-2xl font-semibold text-neutral-900">Cadastro de SEO</h2>
+                                <p id="seoFormProductName" class="text-xs sm:text-sm text-neutral-500 mt-1 truncate"></p>
                             </div>
-                            <button onclick="closeSeoForm()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
+                            <button onclick="closeSeoForm()" class="flex-shrink-0 text-neutral-400 hover:text-neutral-600 transition-colors">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
@@ -212,7 +212,7 @@
 
                         <!-- Form Card -->
                         <div class="bg-white rounded-lg shadow-sm border border-neutral-200">
-                            <form id="seoFormMain" class="p-6">
+                            <form id="seoFormMain" class="p-4 sm:p-6">
                                 <input type="hidden" id="seoFormProductId">
                                 
                                 <!-- Etapa 1: Palavras-chave -->
@@ -241,7 +241,7 @@
                                 <div id="seoFormStep2" class="seo-form-step">
                                     <h4 class="text-lg font-semibold text-neutral-900 mb-6">Meta Tags</h4>
                                     
-                                    <div class="grid grid-cols-2 gap-8">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                                         <div>
                                             <div class="mb-6">
                                                 <label class="form-label">Title Tag *</label>
@@ -284,7 +284,7 @@
                                 <div id="seoFormStep3" class="seo-form-step">
                                     <h4 class="text-lg font-semibold text-neutral-900 mb-6">Schema</h4>
                                     
-                                    <div class="grid grid-cols-2 gap-8">
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                                         <div>
                                             <label class="form-label">Especificações Técnicas</label>
                                             <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50 max-h-96 overflow-y-auto">
@@ -324,17 +324,17 @@
                                 </div>
 
                                 <!-- Navigation Buttons -->
-                                <div class="flex gap-3">
-                                    <button type="button" onclick="closeSeoForm()" class="px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
+                                <div class="flex flex-wrap gap-3">
+                                    <button type="button" onclick="closeSeoForm()" class="px-4 py-2 border border-neutral-300 rounded-lg text-xs sm:text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
                                         Cancelar
                                     </button>
-                                    <button type="button" id="prevFormStepBtn" onclick="prevFormStep()" class="ml-auto px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all hidden">
+                                    <button type="button" id="prevFormStepBtn" onclick="prevFormStep()" class="ml-auto px-4 py-2 border border-neutral-300 rounded-lg text-xs sm:text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all hidden">
                                         Anterior
                                     </button>
-                                    <button type="button" id="nextFormStepBtn" onclick="nextFormStep()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
+                                    <button type="button" id="nextFormStepBtn" onclick="nextFormStep()" class="px-4 py-2 bg-neutral-900 text-white text-xs sm:text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm whitespace-nowrap">
                                         <span id="nextFormStepText">Próxima</span>
                                     </button>
-                                    <button type="submit" id="submitFormBtn" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden">
+                                    <button type="submit" id="submitFormBtn" class="px-4 py-2 bg-neutral-900 text-white text-xs sm:text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden whitespace-nowrap">
                                         Salvar SEO
                                     </button>
                                 </div>
