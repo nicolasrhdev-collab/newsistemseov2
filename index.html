@@ -743,10 +743,52 @@
                     </div>
                 </div>
 
+                <!-- Etapa 3: Schema -->
+                <div id="seoStep3" class="seo-step">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-6">Schema</h4>
+                    
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- Especificações Técnicas do Produto -->
+                        <div>
+                            <label class="form-label">Especificações Técnicas</label>
+                            <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-50 max-h-96 overflow-y-auto">
+                                <div id="productSpecs" class="space-y-3">
+                                    <!-- Product specs will be inserted here -->
+                                </div>
+                            </div>
+                            <p class="text-xs text-neutral-500 mt-3">Dados do produto selecionado</p>
+                        </div>
+                        
+                        <!-- Tipo de Schema -->
+                        <div>
+                            <label class="form-label">Tipo de Schema *</label>
+                            <select id="schemaTypeSelect" class="form-input" onchange="updateSchemaPreview()">
+                                <option value="">Selecione o tipo de schema</option>
+                                <option value="Product">Product (Produto)</option>
+                                <option value="Offer">Offer (Oferta)</option>
+                                <option value="Review">Review (Avaliação)</option>
+                                <option value="AggregateRating">AggregateRating (Avaliações)</option>
+                                <option value="FAQPage">FAQPage (Perguntas Frequentes)</option>
+                                <option value="BreadcrumbList">BreadcrumbList (Breadcrumb)</option>
+                            </select>
+                            <p class="text-xs text-neutral-500 mt-3">Selecione o tipo de schema mais adequado</p>
+                            
+                            <!-- Schema Preview -->
+                            <div class="mt-6">
+                                <label class="form-label">Preview do Schema</label>
+                                <div class="border border-neutral-200 rounded-lg p-4 bg-neutral-900 text-green-400 font-mono text-xs max-h-64 overflow-y-auto">
+                                    <pre id="schemaPreview" class="whitespace-pre-wrap">Selecione um tipo de schema para visualizar</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Step Indicators -->
                 <div class="flex gap-2 justify-center pt-4 border-t border-neutral-200 mt-6 mb-4">
                     <button type="button" onclick="goToStep(1)" id="stepBtn1" class="w-2 h-2 rounded-full bg-neutral-900"></button>
                     <button type="button" onclick="goToStep(2)" id="stepBtn2" class="w-2 h-2 rounded-full bg-neutral-300"></button>
+                    <button type="button" onclick="goToStep(3)" id="stepBtn3" class="w-2 h-2 rounded-full bg-neutral-300"></button>
                 </div>
 
                 <!-- Navigation Buttons -->
@@ -761,7 +803,7 @@
                     </button>
                     <button type="button" id="nextStepBtn" onclick="nextStep()" 
                         class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
-                        Próxima
+                        <span id="nextStepText">Próxima</span>
                     </button>
                     <button type="submit" id="submitBtn"
                         class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm hidden">

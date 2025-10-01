@@ -1253,7 +1253,7 @@ function goToStep(step) {
     document.getElementById(`seoStep${step}`).classList.add('active');
     
     // Update step indicators
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 3; i++) {
         const btn = document.getElementById(`stepBtn${i}`);
         if (i === step) {
             btn.classList.remove('bg-neutral-300');
@@ -1267,21 +1267,33 @@ function goToStep(step) {
     // Update navigation buttons
     const prevBtn = document.getElementById('prevStepBtn');
     const nextBtn = document.getElementById('nextStepBtn');
+    const nextStepText = document.getElementById('nextStepText');
     const submitBtn = document.getElementById('submitBtn');
     
     if (step === 1) {
         prevBtn.classList.add('hidden');
         nextBtn.classList.remove('hidden');
+        nextStepText.textContent = 'Próxima';
         submitBtn.classList.add('hidden');
     } else if (step === 2) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        nextStepText.textContent = 'Próxima';
+        submitBtn.classList.add('hidden');
+    } else if (step === 3) {
         prevBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
     }
+    
+    // Load product specs when entering step 3
+    if (step === 3) {
+        loadProductSpecs();
+    }
 }
 
 function nextStep() {
-    if (currentSeoStep < 2) {
+    if (currentSeoStep < 3) {
         goToStep(currentSeoStep + 1);
     }
 }
@@ -1305,6 +1317,201 @@ function updatePreview() {
     // Update character counts
     document.getElementById('titleCount').textContent = document.getElementById('titleTagInput').value.length;
     document.getElementById('descCount').textContent = document.getElementById('metaDescriptionInput').value.length;
+}
+
+// Load Product Specs for Schema
+function loadProductSpecs() {
+    const productId = parseInt(document.getElementById('seoProductId').value);
+    const product = products.find(p => p.id === productId);
+    const container = document.getElementById('productSpecs');
+    
+    if (!product) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Produto não encontrado</p>';
+        return;
+    }
+    
+    let specsHTML = `
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Nome:</span>
+            <span class="text-sm text-neutral-900">${product.name}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">SKU:</span>
+            <span class="text-sm text-neutral-900">${product.sku}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Tipo:</span>
+            <span class="text-sm text-neutral-900">${product.type === 'simples' ? 'Produto Simples' : 'Produto Composto'}</span>
+        </div>
+        <div class="spec-item">
+            <span class="text-xs font-medium text-neutral-700">Categoria:</span>
+            <span class="text-sm text-neutral-900">${product.category}</span>
+        </div>
+    `;
+    
+    if (product.type === 'simples') {
+        specsHTML += `
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Peso:</span>
+                <span class="text-sm text-neutral-900">${product.weight} kg</span>
+            </div>
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Valor:</span>
+                <span class="text-sm text-neutral-900">R$ ${product.price}</span>
+            </div>
+        `;
+    } else {
+        specsHTML += `
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Peso Total:</span>
+                <span class="text-sm text-neutral-900">${product.totalWeight} kg</span>
+            </div>
+            <div class="spec-item">
+                <span class="text-xs font-medium text-neutral-700">Valor Total:</span>
+                <span class="text-sm text-neutral-900">R$ ${product.totalPrice}</span>
+            </div>
+        `;
+        
+        if (product.specs) {
+            if (product.specs.brand) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Marca:</span><span class="text-sm text-neutral-900">${product.specs.brand}</span></div>`;
+            if (product.specs.material) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Material:</span><span class="text-sm text-neutral-900">${product.specs.material}</span></div>`;
+            if (product.specs.width) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Largura:</span><span class="text-sm text-neutral-900">${product.specs.width} cm</span></div>`;
+            if (product.specs.height) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Altura:</span><span class="text-sm text-neutral-900">${product.specs.height} cm</span></div>`;
+            if (product.specs.depth) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Profundidade:</span><span class="text-sm text-neutral-900">${product.specs.depth} cm</span></div>`;
+            if (product.specs.metalonType) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Tipo Metalon:</span><span class="text-sm text-neutral-900">${product.specs.metalonType}</span></div>`;
+            if (product.specs.capacity) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Capacidade:</span><span class="text-sm text-neutral-900">${product.specs.capacity}</span></div>`;
+            if (product.specs.assembly) specsHTML += `<div class="spec-item"><span class="text-xs font-medium text-neutral-700">Montagem:</span><span class="text-sm text-neutral-900">${product.specs.assembly}</span></div>`;
+        }
+    }
+    
+    container.innerHTML = specsHTML;
+    updateSchemaPreview();
+}
+
+// Update Schema Preview
+function updateSchemaPreview() {
+    const schemaType = document.getElementById('schemaTypeSelect').value;
+    const productId = parseInt(document.getElementById('seoProductId').value);
+    const product = products.find(p => p.id === productId);
+    const previewElement = document.getElementById('schemaPreview');
+    
+    if (!schemaType) {
+        previewElement.textContent = 'Selecione um tipo de schema para visualizar';
+        return;
+    }
+    
+    if (!product) {
+        previewElement.textContent = 'Produto não encontrado';
+        return;
+    }
+    
+    const titleTag = document.getElementById('titleTagInput').value || product.name;
+    const metaDesc = document.getElementById('metaDescriptionInput').value || '';
+    const slug = document.getElementById('slugInput').value || product.sku.toLowerCase();
+    
+    let schema = {};
+    
+    switch(schemaType) {
+        case 'Product':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.name,
+                "sku": product.sku,
+                "description": metaDesc,
+                "category": product.category,
+                "offers": {
+                    "@type": "Offer",
+                    "price": product.price || product.totalPrice,
+                    "priceCurrency": "BRL",
+                    "availability": "https://schema.org/InStock",
+                    "url": `https://seusite.com.br/produto/${slug}`
+                }
+            };
+            break;
+        case 'Offer':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Offer",
+                "name": product.name,
+                "price": product.price || product.totalPrice,
+                "priceCurrency": "BRL",
+                "availability": "https://schema.org/InStock",
+                "url": `https://seusite.com.br/produto/${slug}`
+            };
+            break;
+        case 'Review':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "Review",
+                "itemReviewed": {
+                    "@type": "Product",
+                    "name": product.name,
+                    "sku": product.sku
+                },
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5"
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Cliente"
+                }
+            };
+            break;
+        case 'AggregateRating':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "AggregateRating",
+                "itemReviewed": {
+                    "@type": "Product",
+                    "name": product.name,
+                    "sku": product.sku
+                },
+                "ratingValue": "4.5",
+                "reviewCount": "89"
+            };
+            break;
+        case 'FAQPage':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "FAQPage",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": `Como usar ${product.name}?`,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Instruções de uso do produto..."
+                    }
+                }]
+            };
+            break;
+        case 'BreadcrumbList':
+            schema = {
+                "@context": "https://schema.org/",
+                "@type": "BreadcrumbList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://seusite.com.br"
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": product.category,
+                    "item": `https://seusite.com.br/${product.category.toLowerCase()}`
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": product.name,
+                    "item": `https://seusite.com.br/produto/${slug}`
+                }]
+            };
+            break;
+    }
+    
+    previewElement.textContent = JSON.stringify(schema, null, 2);
 }
 
 // Add secondary keyword
@@ -1408,6 +1615,7 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
     const titleTag = document.getElementById('titleTagInput').value.trim();
     const metaDescription = document.getElementById('metaDescriptionInput').value.trim();
     const slug = document.getElementById('slugInput').value.trim();
+    const schemaType = document.getElementById('schemaTypeSelect').value;
     
     if (!mainKeyword) {
         alert('Adicione a palavra-chave principal!');
@@ -1415,7 +1623,12 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
     }
     
     if (!titleTag || !metaDescription || !slug) {
-        alert('Preencha todos os campos obrigatórios!');
+        alert('Preencha todos os campos obrigatórios da etapa 2!');
+        return;
+    }
+    
+    if (!schemaType) {
+        alert('Selecione um tipo de schema na etapa 3!');
         return;
     }
     
@@ -1429,7 +1642,8 @@ document.getElementById('seoForm').addEventListener('submit', function(e) {
         longTailKeywords: [...longTailKeywords],
         titleTag: titleTag,
         metaDescription: metaDescription,
-        slug: slug
+        slug: slug,
+        schemaType: schemaType
     });
     
     localStorage.setItem('seoData', JSON.stringify(seoData));

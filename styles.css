@@ -289,6 +289,20 @@ textarea.form-input:hover:not(:focus) {
     border-color: #d4d4d4;
 }
 
+/* Spec Item */
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.spec-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
 /* Step Indicator */
 .step-indicator {
     padding: 0.5rem 1rem;
