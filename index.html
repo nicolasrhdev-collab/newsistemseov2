@@ -204,10 +204,6 @@
                             </button>
                             <button type="button" onclick="goToFormStep(2)" id="stepFormBtn2" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-200 text-neutral-600 text-sm font-medium transition-all">
                                 <span>2</span>
-                                <span class="hidden sm:inline">Slug e Preview</span>
-                            </button>
-                            <button type="button" onclick="goToFormStep(3)" id="stepFormBtn3" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-200 text-neutral-600 text-sm font-medium transition-all">
-                                <span>3</span>
                                 <span class="hidden sm:inline">Schema</span>
                             </button>
                         </div>
@@ -304,20 +300,28 @@
                                             <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
                                             <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
                                         </div>
+                                        
+                                        <div>
+                                            <label class="form-label">Slug *</label>
+                                            <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
+                                            <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
+                                        </div>
                                     </div>
                                     
                                     <!-- Preview Google -->
-                                    <div>
+                                    <div class="flex flex-col">
                                         <label class="form-label">Preview Google</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
-                                            <div class="mb-3">
-                                                <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 flex-1 flex items-center">
+                                            <div class="w-full">
+                                                <div class="mb-3">
+                                                    <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -325,40 +329,8 @@
                             </div>
                         </div>
 
-                        <!-- Etapa 2: Slug e Preview -->
+                        <!-- Etapa 2: Dados do Produto e Schema -->
                         <div id="seoFormStep2" class="seo-form-step">
-                            <div class="mb-8 pb-8">
-                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Slug e Preview</h3>
-                                
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                    <!-- Campo de entrada -->
-                                    <div>
-                                        <label class="form-label">Slug *</label>
-                                        <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
-                                        <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
-                                    </div>
-                                    
-                                    <!-- Preview -->
-                                    <div>
-                                        <label class="form-label">Preview Google</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50">
-                                            <div class="mb-3">
-                                                <p class="text-sm text-green-700" id="previewFormUrl">seusite.com.br/produto/slug-do-produto</p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <h3 class="text-xl text-blue-600 font-normal hover:underline cursor-pointer" id="previewFormTitle">Título do Produto | Sua Loja</h3>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-neutral-700 leading-relaxed" id="previewFormDescription">A meta description aparecerá aqui. Escreva uma descrição atraente e informativa para aumentar o CTR nos resultados de busca.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Etapa 3: Schema -->
-                        <div id="seoFormStep3" class="seo-form-step">
                             <div class="mb-8 pb-8">
                                 <h3 class="text-xl font-semibold text-neutral-900 mb-6">Schema</h3>
                                 

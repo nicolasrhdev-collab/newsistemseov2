@@ -1263,14 +1263,16 @@ function goToFormStep(step) {
     document.getElementById(`seoFormStep${step}`).classList.add('active');
     
     // Update step indicators
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 2; i++) {
         const btn = document.getElementById(`stepFormBtn${i}`);
-        if (i === step) {
-            btn.classList.remove('bg-neutral-200', 'text-neutral-600');
-            btn.classList.add('bg-neutral-900', 'text-white');
-        } else {
-            btn.classList.remove('bg-neutral-900', 'text-white');
-            btn.classList.add('bg-neutral-200', 'text-neutral-600');
+        if (btn) {
+            if (i === step) {
+                btn.classList.remove('bg-neutral-200', 'text-neutral-600');
+                btn.classList.add('bg-neutral-900', 'text-white');
+            } else {
+                btn.classList.remove('bg-neutral-900', 'text-white');
+                btn.classList.add('bg-neutral-200', 'text-neutral-600');
+            }
         }
     }
     
@@ -1285,19 +1287,15 @@ function goToFormStep(step) {
         submitBtn.classList.add('hidden');
     } else if (step === 2) {
         prevBtn.classList.remove('hidden');
-        nextBtn.classList.remove('hidden');
-        submitBtn.classList.add('hidden');
-    } else if (step === 3) {
-        prevBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
-        // Load product specs when entering step 3
+        // Load product specs when entering step 2
         loadProductFormSpecs();
     }
 }
 
 function nextFormStep() {
-    if (currentSeoStep < 3) {
+    if (currentSeoStep < 2) {
         goToFormStep(currentSeoStep + 1);
     }
 }
