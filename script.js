@@ -1212,6 +1212,11 @@ function selectProductForSeo(productId) {
     if (product) {
         document.getElementById('seoFormProductId').value = productId;
         document.getElementById('seoFormProductName').textContent = `Produto: ${product.name} (${product.sku})`;
+        
+        // Preencher valor do produto
+        const productPrice = product.price || product.totalPrice || 0;
+        document.getElementById('productValueInput').value = `R$ ${productPrice.toFixed(2).replace('.', ',')}`;
+        
         closeSelectProductModal();
         openSeoForm();
     }
@@ -1609,13 +1614,25 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
     const slug = document.getElementById('slugFormInput').value.trim();
     const schemaType = document.getElementById('schemaTypeFormSelect').value;
     
+    // Novos campos
+    const targetAudience = document.getElementById('targetAudienceInput').value.trim();
+    const secondaryAudience = document.getElementById('secondaryAudienceInput').value.trim();
+    const storeType = document.getElementById('storeTypeInput').value.trim();
+    const gender = document.getElementById('genderSelect').value;
+    const productValue = document.getElementById('productValueInput').value.trim();
+    
     if (!mainKeyword) {
         alert('Adicione a palavra-chave principal!');
         return;
     }
     
+    if (!targetAudience) {
+        alert('Preencha o campo Público Alvo!');
+        return;
+    }
+    
     if (!titleTag || !metaDescription || !slug) {
-        alert('Preencha todos os campos obrigatórios da etapa 2!');
+        alert('Preencha todos os campos obrigatórios (Title Tag, Meta Description e Slug)!');
         return;
     }
     
@@ -1632,6 +1649,11 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
         mainKeyword: mainKeyword,
         secondaryKeywords: [...secondaryKeywords],
         longTailKeywords: [...longTailKeywords],
+        targetAudience: targetAudience,
+        secondaryAudience: secondaryAudience,
+        storeType: storeType,
+        gender: gender,
+        productValue: productValue,
         titleTag: titleTag,
         metaDescription: metaDescription,
         slug: slug,

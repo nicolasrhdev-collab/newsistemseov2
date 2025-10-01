@@ -200,11 +200,11 @@
                         <div class="flex gap-3 justify-center mb-8">
                             <button type="button" onclick="goToFormStep(1)" id="stepFormBtn1" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium transition-all">
                                 <span>1</span>
-                                <span class="hidden sm:inline">Palavras-chave</span>
+                                <span class="hidden sm:inline">Dados Gerais</span>
                             </button>
                             <button type="button" onclick="goToFormStep(2)" id="stepFormBtn2" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-200 text-neutral-600 text-sm font-medium transition-all">
                                 <span>2</span>
-                                <span class="hidden sm:inline">Meta Tags</span>
+                                <span class="hidden sm:inline">Slug e Preview</span>
                             </button>
                             <button type="button" onclick="goToFormStep(3)" id="stepFormBtn3" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-200 text-neutral-600 text-sm font-medium transition-all">
                                 <span>3</span>
@@ -214,7 +214,8 @@
 
                         <!-- Etapa 1: Palavras-chave -->
                         <div id="seoFormStep1" class="seo-form-step active">
-                            <div class="mb-8 pb-8">
+                            <!-- Seção 1: Palavras-chave -->
+                            <div class="mb-8 pb-8 border-b border-neutral-200">
                                 <h3 class="text-xl font-semibold text-neutral-900 mb-6">Palavras-chave</h3>
                                 
                                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -239,33 +240,83 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Etapa 2: Meta Tags -->
-                        <div id="seoFormStep2" class="seo-form-step">
-                            <div class="mb-8 pb-8">
+                            <!-- Seção 2: Público e Segmentação -->
+                            <div class="mb-8 pb-8 border-b border-neutral-200">
+                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Público e Segmentação</h3>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                                    <!-- Público Alvo -->
+                                    <div>
+                                        <label class="form-label">Público Alvo *</label>
+                                        <input type="text" id="targetAudienceInput" placeholder="Ex: Empresários, Estudantes" class="form-input">
+                                    </div>
+                                    
+                                    <!-- Público Secundário -->
+                                    <div>
+                                        <label class="form-label">Público Secundário</label>
+                                        <input type="text" id="secondaryAudienceInput" placeholder="Ex: Profissionais liberais" class="form-input">
+                                    </div>
+                                    
+                                    <!-- Tipo de Loja -->
+                                    <div>
+                                        <label class="form-label">Tipo de Loja</label>
+                                        <input type="text" id="storeTypeInput" placeholder="Ex: E-commerce, Varejo" class="form-input">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <!-- Sexo -->
+                                    <div>
+                                        <label class="form-label">Sexo</label>
+                                        <select id="genderSelect" class="form-input">
+                                            <option value="">Selecione</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Feminino">Feminino</option>
+                                            <option value="Unissex">Unissex</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Valor do Produto (Dados Financeiros) -->
+                                    <div>
+                                        <label class="form-label">Valor do Produto</label>
+                                        <input type="text" id="productValueInput" placeholder="R$ 0,00" class="form-input" readonly>
+                                        <p class="text-xs text-neutral-500 mt-1.5">Valor do produto selecionado</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seção 3: Meta Tags -->
+                            <div class="mb-8">
                                 <h3 class="text-xl font-semibold text-neutral-900 mb-6">Meta Tags</h3>
                                 
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="form-label">Title Tag *</label>
+                                        <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
+                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="form-label">Meta Description *</label>
+                                        <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
+                                        <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Etapa 2: Slug e Preview -->
+                        <div id="seoFormStep2" class="seo-form-step">
+                            <div class="mb-8 pb-8">
+                                <h3 class="text-xl font-semibold text-neutral-900 mb-6">Slug e Preview</h3>
+                                
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                    <!-- Campos de entrada -->
-                                    <div class="space-y-6">
-                                        <div>
-                                            <label class="form-label">Title Tag *</label>
-                                            <input type="text" id="titleTagFormInput" placeholder="Digite o título da página" class="form-input" maxlength="60" oninput="updateFormPreview()">
-                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="titleFormCount">0</span>/60 caracteres</p>
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="form-label">Meta Description *</label>
-                                            <textarea id="metaDescriptionFormInput" placeholder="Digite a descrição da página" class="form-input resize-none" rows="4" maxlength="160" oninput="updateFormPreview()"></textarea>
-                                            <p class="text-xs text-neutral-500 mt-1.5"><span id="descFormCount">0</span>/160 caracteres</p>
-                                        </div>
-                                        
-                                        <div>
-                                            <label class="form-label">Slug *</label>
-                                            <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
-                                            <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
-                                        </div>
+                                    <!-- Campo de entrada -->
+                                    <div>
+                                        <label class="form-label">Slug *</label>
+                                        <input type="text" id="slugFormInput" placeholder="digite-o-slug-da-url" class="form-input" oninput="updateFormPreview()">
+                                        <p class="text-xs text-neutral-500 mt-1.5">URL amigável para SEO</p>
                                     </div>
                                     
                                     <!-- Preview -->
