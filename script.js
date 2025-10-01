@@ -1247,10 +1247,21 @@ function closeSeoForm() {
     document.getElementById('seoFormMain').reset();
     secondaryKeywords = [];
     longTailKeywords = [];
+    benefits = [];
+    uses = [];
+    faqs = [];
     renderSecondaryKeywordsForm();
     renderLongTailKeywordsForm();
     currentSeoStep = 1;
 }
+
+// Arrays para gerenciar conteúdo dinâmico
+let benefits = [];
+let uses = [];
+let faqs = [];
+let benefitCounter = 0;
+let useCounter = 0;
+let faqCounter = 0;
 
 // Form Step Navigation
 function goToFormStep(step) {
@@ -1263,7 +1274,7 @@ function goToFormStep(step) {
     document.getElementById(`seoFormStep${step}`).classList.add('active');
     
     // Update step indicators
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 3; i++) {
         const btn = document.getElementById(`stepFormBtn${i}`);
         if (btn) {
             if (i === step) {
@@ -1287,15 +1298,19 @@ function goToFormStep(step) {
         submitBtn.classList.add('hidden');
     } else if (step === 2) {
         prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+        // Load product specs when entering step 2
+        loadProductFormSpecsAsInputs();
+    } else if (step === 3) {
+        prevBtn.classList.remove('hidden');
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
-        // Load product specs when entering step 2
-        loadProductFormSpecs();
     }
 }
 
 function nextFormStep() {
-    if (currentSeoStep < 2) {
+    if (currentSeoStep < 3) {
         goToFormStep(currentSeoStep + 1);
     }
 }
@@ -1319,6 +1334,56 @@ function updateFormPreview() {
     // Update character counts
     document.getElementById('titleFormCount').textContent = document.getElementById('titleTagFormInput').value.length;
     document.getElementById('descFormCount').textContent = document.getElementById('metaDescriptionFormInput').value.length;
+}
+
+// Load Product Specs as Inputs
+function loadProductFormSpecsAsInputs() {
+    const productId = parseInt(document.getElementById('seoFormProductId').value);
+    const product = products.find(p => p.id === productId);
+    const container = document.getElementById('productFormSpecsInputs');
+    
+    if (!product) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Produto não encontrado</p>';
+        return;
+    }
+    
+    let inputsHTML = `
+        <div>
+            <label class="form-label text-xs">Nome</label>
+            <input type="text" value="${product.name}" class="form-input text-sm" readonly>
+        </div>
+        <div>
+            <label class="form-label text-xs">SKU</label>
+            <input type="text" value="${product.sku}" class="form-input text-sm" readonly>
+        </div>
+        <div>
+            <label class="form-label text-xs">Categoria</label>
+            <input type="text" value="${product.category}" class="form-input text-sm" readonly>
+        </div>
+    `;
+    
+    if (product.type === 'simples') {
+        inputsHTML += `
+            <div>
+                <label class="form-label text-xs">Peso</label>
+                <input type="text" value="${product.weight} kg" class="form-input text-sm" readonly>
+            </div>
+            <div>
+                <label class="form-label text-xs">Valor</label>
+                <input type="text" value="R$ ${product.price.toFixed(2)}" class="form-input text-sm" readonly>
+            </div>
+        `;
+    } else if (product.specs) {
+        if (product.specs.brand) inputsHTML += `<div><label class="form-label text-xs">Marca</label><input type="text" value="${product.specs.brand}" class="form-input text-sm" readonly></div>`;
+        if (product.specs.material) inputsHTML += `<div><label class="form-label text-xs">Material</label><input type="text" value="${product.specs.material}" class="form-input text-sm" readonly></div>`;
+        if (product.specs.width) inputsHTML += `<div><label class="form-label text-xs">Largura</label><input type="text" value="${product.specs.width} cm" class="form-input text-sm" readonly></div>`;
+        if (product.specs.height) inputsHTML += `<div><label class="form-label text-xs">Altura</label><input type="text" value="${product.specs.height} cm" class="form-input text-sm" readonly></div>`;
+        if (product.specs.depth) inputsHTML += `<div><label class="form-label text-xs">Profundidade</label><input type="text" value="${product.specs.depth} cm" class="form-input text-sm" readonly></div>`;
+        if (product.weight) inputsHTML += `<div><label class="form-label text-xs">Peso</label><input type="text" value="${product.weight} kg" class="form-input text-sm" readonly></div>`;
+        if (product.price) inputsHTML += `<div><label class="form-label text-xs">Valor</label><input type="text" value="R$ ${product.price.toFixed(2)}" class="form-input text-sm" readonly></div>`;
+    }
+    
+    container.innerHTML = inputsHTML;
 }
 
 // Load Product Specs for Form
@@ -1610,15 +1675,21 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
     const titleTag = document.getElementById('titleTagFormInput').value.trim();
     const metaDescription = document.getElementById('metaDescriptionFormInput').value.trim();
     const slug = document.getElementById('slugFormInput').value.trim();
-    const schemaType = document.getElementById('schemaTypeFormSelect').value;
+    const schemaType = document.getElementById('schemaTypeInput').value.trim();
     
-    // Novos campos
+    // Etapa 1: Público e Segmentação
     const targetAudience = document.getElementById('targetAudienceInput').value.trim();
     const secondaryAudience = document.getElementById('secondaryAudienceInput').value.trim();
     const storeType = document.getElementById('storeTypeInput').value.trim();
     const gender = document.getElementById('genderSelect').value;
     const productValue = document.getElementById('productValueInput').value.trim();
     
+    // Etapa 3: Conteúdo
+    const h1 = document.getElementById('h1Input').value.trim();
+    const h2 = document.getElementById('h2Input').value.trim();
+    const warnings = document.getElementById('warningsInput').value.trim();
+    
+    // Validações
     if (!mainKeyword) {
         alert('Adicione a palavra-chave principal!');
         return;
@@ -1635,7 +1706,12 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
     }
     
     if (!schemaType) {
-        alert('Selecione um tipo de schema na etapa 3!');
+        alert('Preencha o tipo de schema na etapa 2!');
+        return;
+    }
+    
+    if (!h1) {
+        alert('Preencha o H1 na etapa 3!');
         return;
     }
     
@@ -1655,7 +1731,13 @@ document.getElementById('seoFormMain').addEventListener('submit', function(e) {
         titleTag: titleTag,
         metaDescription: metaDescription,
         slug: slug,
-        schemaType: schemaType
+        schemaType: schemaType,
+        h1: h1,
+        h2: h2,
+        benefits: [...benefits],
+        uses: [...uses],
+        warnings: warnings,
+        faqs: [...faqs]
     });
     
     localStorage.setItem('seoData', JSON.stringify(seoData));
@@ -1685,6 +1767,138 @@ document.getElementById('selectProductModal').addEventListener('click', function
         closeSelectProductModal();
     }
 });
+
+// === BENEFÍCIOS ===
+function addBenefit() {
+    benefitCounter++;
+    const id = benefitCounter;
+    benefits.push({ id, title: '', description: '' });
+    renderBenefits();
+}
+
+function removeBenefit(id) {
+    benefits = benefits.filter(b => b.id !== id);
+    renderBenefits();
+}
+
+function renderBenefits() {
+    const container = document.getElementById('benefitsContainer');
+    if (benefits.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Nenhum benefício adicionado</p>';
+        return;
+    }
+    
+    container.innerHTML = benefits.map(benefit => `
+        <div class="border border-neutral-200 rounded-lg p-4 bg-white">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <input type="text" placeholder="Título do benefício" value="${benefit.title}" 
+                    onchange="updateBenefit(${benefit.id}, 'title', this.value)" class="form-input">
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Descrição rápida" value="${benefit.description}" 
+                        onchange="updateBenefit(${benefit.id}, 'description', this.value)" class="form-input flex-1">
+                    <button type="button" onclick="removeBenefit(${benefit.id})" class="px-3 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateBenefit(id, field, value) {
+    const benefit = benefits.find(b => b.id === id);
+    if (benefit) {
+        benefit[field] = value;
+    }
+}
+
+// === USOS ===
+function addUse() {
+    useCounter++;
+    const id = useCounter;
+    uses.push({ id, description: '' });
+    renderUses();
+}
+
+function removeUse(id) {
+    uses = uses.filter(u => u.id !== id);
+    renderUses();
+}
+
+function renderUses() {
+    const container = document.getElementById('usesContainer');
+    if (uses.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Nenhum uso adicionado</p>';
+        return;
+    }
+    
+    container.innerHTML = uses.map(use => `
+        <div class="flex gap-2">
+            <input type="text" placeholder="Descreva um possível uso" value="${use.description}" 
+                onchange="updateUse(${use.id}, this.value)" class="form-input flex-1">
+            <button type="button" onclick="removeUse(${use.id})" class="px-3 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    `).join('');
+}
+
+function updateUse(id, value) {
+    const use = uses.find(u => u.id === id);
+    if (use) {
+        use.description = value;
+    }
+}
+
+// === FAQ ===
+function addFAQ() {
+    faqCounter++;
+    const id = faqCounter;
+    faqs.push({ id, question: '', answer: '' });
+    renderFAQs();
+}
+
+function removeFAQ(id) {
+    faqs = faqs.filter(f => f.id !== id);
+    renderFAQs();
+}
+
+function renderFAQs() {
+    const container = document.getElementById('faqContainer');
+    if (faqs.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Nenhuma pergunta adicionada</p>';
+        return;
+    }
+    
+    container.innerHTML = faqs.map(faq => `
+        <div class="border border-neutral-200 rounded-lg p-4 bg-white">
+            <div class="space-y-4">
+                <div class="flex gap-2 items-start">
+                    <input type="text" placeholder="Pergunta" value="${faq.question}" 
+                        onchange="updateFAQ(${faq.id}, 'question', this.value)" class="form-input flex-1">
+                    <button type="button" onclick="removeFAQ(${faq.id})" class="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <textarea placeholder="Resposta" value="${faq.answer}" 
+                    onchange="updateFAQ(${faq.id}, 'answer', this.value)" class="form-input resize-none" rows="3">${faq.answer}</textarea>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateFAQ(id, field, value) {
+    const faq = faqs.find(f => f.id === id);
+    if (faq) {
+        faq[field] = value;
+    }
+}
 
 // Initial render
 renderProducts();

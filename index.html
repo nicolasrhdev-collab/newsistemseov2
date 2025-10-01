@@ -206,6 +206,10 @@
                                 <span>2</span>
                                 <span class="hidden sm:inline">Schema</span>
                             </button>
+                            <button type="button" onclick="goToFormStep(3)" id="stepFormBtn3" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-neutral-200 text-neutral-600 text-sm font-medium transition-all">
+                                <span>3</span>
+                                <span class="hidden sm:inline">Conteúdo</span>
+                            </button>
                         </div>
 
                         <!-- Etapa 1: Palavras-chave -->
@@ -329,42 +333,85 @@
                             </div>
                         </div>
 
-                        <!-- Etapa 2: Dados do Produto e Schema -->
+                        <!-- Etapa 2: Schema -->
                         <div id="seoFormStep2" class="seo-form-step">
                             <div class="mb-8 pb-8">
                                 <h3 class="text-xl font-semibold text-neutral-900 mb-6">Schema</h3>
                                 
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                    <!-- Especificações Técnicas -->
+                                    <!-- Dados do Produto -->
                                     <div>
-                                        <label class="form-label">Especificações Técnicas do Produto</label>
-                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 max-h-96 overflow-y-auto">
-                                            <div id="productFormSpecs" class="space-y-4"></div>
+                                        <label class="form-label">Dados do Produto</label>
+                                        <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-50 space-y-4">
+                                            <div id="productFormSpecsInputs"></div>
                                         </div>
                                     </div>
                                     
-                                    <!-- Schema -->
-                                    <div class="space-y-6">
+                                    <!-- Tipo de Schema -->
+                                    <div>
+                                        <label class="form-label">Tipo de Schema *</label>
+                                        <input type="text" id="schemaTypeInput" placeholder="Ex: Product, Offer, Review" class="form-input">
+                                        <p class="text-xs text-neutral-500 mt-1.5">Digite o tipo de schema desejado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Etapa 3: Conteúdo -->
+                        <div id="seoFormStep3" class="seo-form-step">
+                            <div class="mb-8 pb-8">
+                                <!-- H1 e H2 -->
+                                <div class="mb-8 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Títulos</h3>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                         <div>
-                                            <label class="form-label">Tipo de Schema *</label>
-                                            <select id="schemaTypeFormSelect" class="form-input" onchange="updateFormSchemaPreview()">
-                                                <option value="">Selecione o tipo de schema</option>
-                                                <option value="Product">Product (Produto)</option>
-                                                <option value="Offer">Offer (Oferta)</option>
-                                                <option value="Review">Review (Avaliação)</option>
-                                                <option value="AggregateRating">AggregateRating (Avaliações)</option>
-                                                <option value="FAQPage">FAQPage (Perguntas Frequentes)</option>
-                                                <option value="BreadcrumbList">BreadcrumbList (Breadcrumb)</option>
-                                            </select>
+                                            <label class="form-label">H1 *</label>
+                                            <input type="text" id="h1Input" placeholder="Título principal da página" class="form-input">
                                         </div>
-                                        
                                         <div>
-                                            <label class="form-label">Preview do Schema</label>
-                                            <div class="border border-neutral-200 rounded-lg p-6 bg-neutral-900 text-green-400 font-mono text-sm max-h-64 overflow-y-auto">
-                                                <pre id="schemaFormPreview" class="whitespace-pre-wrap">Selecione um tipo de schema para visualizar</pre>
-                                            </div>
+                                            <label class="form-label">H2</label>
+                                            <input type="text" id="h2Input" placeholder="Subtítulo da página" class="form-input">
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- Benefícios -->
+                                <div class="mb-8 pb-8 border-b border-neutral-200">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <h3 class="text-xl font-semibold text-neutral-900">Benefícios</h3>
+                                        <button type="button" onclick="addBenefit()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                            + Adicionar Benefício
+                                        </button>
+                                    </div>
+                                    <div id="benefitsContainer" class="space-y-4"></div>
+                                </div>
+
+                                <!-- Possíveis Usos -->
+                                <div class="mb-8 pb-8 border-b border-neutral-200">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <h3 class="text-xl font-semibold text-neutral-900">Possíveis Usos</h3>
+                                        <button type="button" onclick="addUse()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                            + Adicionar Uso
+                                        </button>
+                                    </div>
+                                    <div id="usesContainer" class="space-y-4"></div>
+                                </div>
+
+                                <!-- Avisos -->
+                                <div class="mb-8 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-xl font-semibold text-neutral-900 mb-6">Avisos do Produto</h3>
+                                    <textarea id="warningsInput" placeholder="Digite avisos importantes sobre o produto (opcional)" class="form-input resize-none" rows="4"></textarea>
+                                </div>
+
+                                <!-- Perguntas Frequentes -->
+                                <div class="mb-8">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <h3 class="text-xl font-semibold text-neutral-900">Perguntas Frequentes</h3>
+                                        <button type="button" onclick="addFAQ()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                            + Adicionar Pergunta
+                                        </button>
+                                    </div>
+                                    <div id="faqContainer" class="space-y-4"></div>
                                 </div>
                             </div>
                         </div>
