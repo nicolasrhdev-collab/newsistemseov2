@@ -442,6 +442,34 @@
                                     </div>
                                     <div id="faqContainer" class="space-y-3"></div>
                                 </div>
+
+                                <hr class="border-neutral-200 mt-6">
+
+                                <!-- Status Section -->
+                                <div class="mt-6">
+                                    <h4 class="text-sm font-semibold text-neutral-900 mb-4">Status do SEO</h4>
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">Status *</label>
+                                        <div id="seoStatusDropdownContainer"></div>
+                                    </div>
+
+                                    <!-- Todo List (shown when status is Incompleto or Pendente) -->
+                                    <div id="seoTodos" class="hidden">
+                                        <label class="form-label mb-2">Tarefas Pendentes</label>
+                                        <div id="seoTodosList" class="space-y-2 mb-3">
+                                            <!-- Todos will be rendered here -->
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <input type="text" id="seoTodoInput" placeholder="Digite uma tarefa e pressione Enter..." class="form-input flex-1 text-sm">
+                                            <button type="button" onclick="addSeoTodo()" class="px-3 py-2 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors">
+                                                <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -580,6 +608,32 @@
                     <input type="number" id="simplePrice" step="0.01" required class="form-input">
                 </div>
 
+                <!-- Status Section -->
+                <div class="mb-6 pb-6 border-t border-neutral-200 pt-6">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-4">Status do Produto</h4>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Status *</label>
+                        <div id="simpleStatusDropdownContainer"></div>
+                    </div>
+
+                    <!-- Todo List (shown when status is Incompleto or Pendente) -->
+                    <div id="simpleProductTodos" class="hidden">
+                        <label class="form-label mb-2">Tarefas Pendentes</label>
+                        <div id="simpleProductTodosList" class="space-y-2 mb-3">
+                            <!-- Todos will be rendered here -->
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="simpleProductTodoInput" placeholder="Digite uma tarefa e pressione Enter..." class="form-input flex-1 text-sm">
+                            <button type="button" onclick="addSimpleProductTodo()" class="px-3 py-2 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors">
+                                <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex gap-3 pt-4 border-t border-neutral-200">
                     <button type="button" onclick="closeSimpleProductModal()" 
                         class="flex-1 px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
@@ -606,6 +660,7 @@
                             <div class="step-indicator" data-step="2">2. Componentes</div>
                             <div class="step-indicator" data-step="3">3. Especificações</div>
                             <div class="step-indicator" data-step="4">4. Embalagem</div>
+                            <div class="step-indicator" data-step="5">5. Status</div>
                         </div>
                     </div>
                     <button onclick="closeCompositeProductModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
@@ -846,6 +901,32 @@
                         </svg>
                         Adicionar Caixa
                     </button>
+                </div>
+
+                <!-- Step 5: Status -->
+                <div id="step5" class="step-content" style="display: none;">
+                    <h4 class="text-sm font-semibold text-neutral-900 mb-4">Status do Produto</h4>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Status *</label>
+                        <div id="compositeStatusDropdownContainer"></div>
+                    </div>
+
+                    <!-- Todo List (shown when status is Incompleto or Pendente) -->
+                    <div id="compositeProductTodos" class="hidden">
+                        <label class="form-label mb-2">Tarefas Pendentes</label>
+                        <div id="compositeProductTodosList" class="space-y-2 mb-3">
+                            <!-- Todos will be rendered here -->
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="compositeProductTodoInput" placeholder="Digite uma tarefa e pressione Enter..." class="form-input flex-1 text-sm">
+                            <button type="button" onclick="addCompositeProductTodo()" class="px-3 py-2 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors">
+                                <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Navigation Buttons -->

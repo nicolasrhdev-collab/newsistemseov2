@@ -258,9 +258,6 @@ function openSimpleProductModal(productId = null) {
     const modal = document.getElementById('simpleProductModal');
     const form = document.getElementById('simpleProductForm');
     
-    // Initialize status dropdown
-    initializeStatusDropdowns();
-    
     if (productId) {
         const product = products.find(p => p.id === productId);
         currentEditId = productId;
@@ -270,25 +267,11 @@ function openSimpleProductModal(productId = null) {
         document.getElementById('simpleCategory').value = product.category;
         document.getElementById('simpleWeight').value = product.weight;
         document.getElementById('simplePrice').value = product.price;
-        
-        // Load status and todos
-        if (product.status) {
-            setCustomDropdownValue('simpleStatusDropdown', product.status);
-            if (product.status === 'Incompleto' || product.status === 'Pendente') {
-                document.getElementById('simpleProductTodos').classList.remove('hidden');
-            }
-        }
-        currentSimpleTodos = product.todos || [];
-        renderSimpleProductTodos();
-        
         // Hide dropdown when editing
         document.getElementById('simpleProductTypeSection').style.display = 'none';
     } else {
         currentEditId = null;
         form.reset();
-        currentSimpleTodos = [];
-        document.getElementById('simpleProductTodos').classList.add('hidden');
-        
         // Initialize product type dropdown (only for new products)
         document.getElementById('productTypeDropdownContainer').innerHTML = createCustomDropdown(
             'productTypeDropdown', 
@@ -329,9 +312,7 @@ document.getElementById('simpleProductForm').addEventListener('submit', function
         sku: document.getElementById('simpleSku').value,
         category: document.getElementById('simpleCategory').value,
         weight: parseFloat(document.getElementById('simpleWeight').value),
-        price: parseFloat(document.getElementById('simplePrice').value),
-        status: getCustomDropdownValue('simpleStatusDropdown') || 'Concluído',
-        todos: currentSimpleTodos
+        price: parseFloat(document.getElementById('simplePrice').value)
     };
     
     if (currentEditId) {
@@ -345,9 +326,6 @@ document.getElementById('simpleProductForm').addEventListener('submit', function
     localStorage.setItem('products', JSON.stringify(products));
     renderProducts();
     closeSimpleProductModal();
-    
-    // Reset todos
-    currentSimpleTodos = [];
 });
 
 // ============= PRODUTO COMPOSTO =============
@@ -1616,14 +1594,6 @@ function getCustomDropdownValue(triggerId) {
     return trigger.getAttribute('data-value') || '';
 }
 
-function setCustomDropdownValue(triggerId, value) {
-    const menu = document.getElementById(triggerId);
-    if (!menu) return;
-    const trigger = menu.previousElementSibling;
-    trigger.setAttribute('data-value', value);
-    trigger.querySelector('.dropdown-selected-text').textContent = value;
-}
-
 // Load Product Specs as Schema Fields
 function loadProductFormSpecsAsInputs() {
     const productId = parseInt(document.getElementById('seoFormProductId').value);
@@ -2476,256 +2446,5 @@ function downloadCSV(content, filename) {
     document.body.removeChild(link);
 }
 
-// ============= STATUS & TODO MANAGEMENT =============
-
-let currentSimpleTodos = [];
-let currentCompositeTodos = [];
-let currentSeoTodos = [];
-
-// Initialize status dropdowns
-function initializeStatusDropdowns() {
-    // Simple Product Status
-    const simpleStatusContainer = document.getElementById('simpleStatusDropdownContainer');
-    if (simpleStatusContainer) {
-        simpleStatusContainer.innerHTML = createCustomDropdown(
-            'simpleStatusDropdown',
-            ['Concluído', 'Incompleto', 'Pendente'],
-            'Concluído',
-            'Selecione o status'
-        );
-    }
-
-    // Composite Product Status
-    const compositeStatusContainer = document.getElementById('compositeStatusDropdownContainer');
-    if (compositeStatusContainer) {
-        compositeStatusContainer.innerHTML = createCustomDropdown(
-            'compositeStatusDropdown',
-            ['Concluído', 'Incompleto', 'Pendente'],
-            'Concluído',
-            'Selecione o status'
-        );
-    }
-
-    // SEO Status
-    const seoStatusContainer = document.getElementById('seoStatusDropdownContainer');
-    if (seoStatusContainer) {
-        seoStatusContainer.innerHTML = createCustomDropdown(
-            'seoStatusDropdown',
-            ['Concluído', 'Incompleto', 'Pendente'],
-            'Concluído',
-            'Selecione o status'
-        );
-    }
-}
-
-// Handle status changes to show/hide todos
-document.addEventListener('dropdownChange', function(e) {
-    if (e.detail.id === 'simpleStatusDropdown') {
-        const todosSection = document.getElementById('simpleProductTodos');
-        if (e.detail.value === 'Incompleto' || e.detail.value === 'Pendente') {
-            todosSection.classList.remove('hidden');
-        } else {
-            todosSection.classList.add('hidden');
-        }
-    }
-    
-    if (e.detail.id === 'compositeStatusDropdown') {
-        const todosSection = document.getElementById('compositeProductTodos');
-        if (e.detail.value === 'Incompleto' || e.detail.value === 'Pendente') {
-            todosSection.classList.remove('hidden');
-        } else {
-            todosSection.classList.add('hidden');
-        }
-    }
-    
-    if (e.detail.id === 'seoStatusDropdown') {
-        const todosSection = document.getElementById('seoTodos');
-        if (e.detail.value === 'Incompleto' || e.detail.value === 'Pendente') {
-            todosSection.classList.remove('hidden');
-        } else {
-            todosSection.classList.add('hidden');
-        }
-    }
-});
-
-// Simple Product Todos
-function addSimpleProductTodo() {
-    const input = document.getElementById('simpleProductTodoInput');
-    const text = input.value.trim();
-    
-    if (text) {
-        currentSimpleTodos.push({ id: Date.now(), text: text, completed: false });
-        input.value = '';
-        renderSimpleProductTodos();
-    }
-}
-
-function renderSimpleProductTodos() {
-    const container = document.getElementById('simpleProductTodosList');
-    container.innerHTML = currentSimpleTodos.map(todo => `
-        <div class="flex items-center gap-2 p-2 bg-neutral-50 rounded-lg group">
-            <input type="checkbox" 
-                ${todo.completed ? 'checked' : ''} 
-                onchange="toggleSimpleTodo(${todo.id})"
-                class="w-4 h-4 text-neutral-900 rounded border-neutral-300 focus:ring-neutral-900 focus:ring-2">
-            <span class="${todo.completed ? 'line-through text-neutral-400' : 'text-neutral-700'} flex-1 text-sm">${todo.text}</span>
-            <button onclick="removeSimpleTodo(${todo.id})" class="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 transition-opacity">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
-    `).join('');
-}
-
-function toggleSimpleTodo(id) {
-    const todo = currentSimpleTodos.find(t => t.id === id);
-    if (todo) {
-        todo.completed = !todo.completed;
-        renderSimpleProductTodos();
-    }
-}
-
-function removeSimpleTodo(id) {
-    currentSimpleTodos = currentSimpleTodos.filter(t => t.id !== id);
-    renderSimpleProductTodos();
-}
-
-// Handle Enter key for simple product todos
-document.addEventListener('DOMContentLoaded', function() {
-    const simpleInput = document.getElementById('simpleProductTodoInput');
-    if (simpleInput) {
-        simpleInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addSimpleProductTodo();
-            }
-        });
-    }
-});
-
-// Composite Product Todos
-function addCompositeProductTodo() {
-    const input = document.getElementById('compositeProductTodoInput');
-    const text = input.value.trim();
-    
-    if (text) {
-        currentCompositeTodos.push({ id: Date.now(), text: text, completed: false });
-        input.value = '';
-        renderCompositeProductTodos();
-    }
-}
-
-function renderCompositeProductTodos() {
-    const container = document.getElementById('compositeProductTodosList');
-    container.innerHTML = currentCompositeTodos.map(todo => `
-        <div class="flex items-center gap-2 p-2 bg-neutral-50 rounded-lg group">
-            <input type="checkbox" 
-                ${todo.completed ? 'checked' : ''} 
-                onchange="toggleCompositeTodo(${todo.id})"
-                class="w-4 h-4 text-neutral-900 rounded border-neutral-300 focus:ring-neutral-900 focus:ring-2">
-            <span class="${todo.completed ? 'line-through text-neutral-400' : 'text-neutral-700'} flex-1 text-sm">${todo.text}</span>
-            <button onclick="removeCompositeTodo(${todo.id})" class="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 transition-opacity">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
-    `).join('');
-}
-
-function toggleCompositeTodo(id) {
-    const todo = currentCompositeTodos.find(t => t.id === id);
-    if (todo) {
-        todo.completed = !todo.completed;
-        renderCompositeProductTodos();
-    }
-}
-
-function removeCompositeTodo(id) {
-    currentCompositeTodos = currentCompositeTodos.filter(t => t.id !== id);
-    renderCompositeProductTodos();
-}
-
-// Handle Enter key for composite product todos
-document.addEventListener('DOMContentLoaded', function() {
-    const compositeInput = document.getElementById('compositeProductTodoInput');
-    if (compositeInput) {
-        compositeInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addCompositeProductTodo();
-            }
-        });
-    }
-});
-
-// SEO Todos
-function addSeoTodo() {
-    const input = document.getElementById('seoTodoInput');
-    const text = input.value.trim();
-    
-    if (text) {
-        currentSeoTodos.push({ id: Date.now(), text: text, completed: false });
-        input.value = '';
-        renderSeoTodos();
-    }
-}
-
-function renderSeoTodos() {
-    const container = document.getElementById('seoTodosList');
-    container.innerHTML = currentSeoTodos.map(todo => `
-        <div class="flex items-center gap-2 p-2 bg-neutral-50 rounded-lg group">
-            <input type="checkbox" 
-                ${todo.completed ? 'checked' : ''} 
-                onchange="toggleSeoTodo(${todo.id})"
-                class="w-4 h-4 text-neutral-900 rounded border-neutral-300 focus:ring-neutral-900 focus:ring-2">
-            <span class="${todo.completed ? 'line-through text-neutral-400' : 'text-neutral-700'} flex-1 text-sm">${todo.text}</span>
-            <button onclick="removeSeoTodo(${todo.id})" class="opacity-0 group-hover:opacity-100 text-red-600 hover:text-red-700 transition-opacity">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-        </div>
-    `).join('');
-}
-
-function toggleSeoTodo(id) {
-    const todo = currentSeoTodos.find(t => t.id === id);
-    if (todo) {
-        todo.completed = !todo.completed;
-        renderSeoTodos();
-    }
-}
-
-function removeSeoTodo(id) {
-    currentSeoTodos = currentSeoTodos.filter(t => t.id !== id);
-    renderSeoTodos();
-}
-
-// Handle Enter key for SEO todos
-document.addEventListener('DOMContentLoaded', function() {
-    const seoInput = document.getElementById('seoTodoInput');
-    if (seoInput) {
-        seoInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addSeoTodo();
-            }
-        });
-    }
-});
-
-// Get status badge HTML
-function getStatusBadge(status) {
-    const badges = {
-        'Concluído': '<span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded">✓ Concluído</span>',
-        'Incompleto': '<span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 rounded">⚠ Incompleto</span>',
-        'Pendente': '<span class="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded">⏱ Pendente</span>'
-    };
-    return badges[status] || '';
-}
-
 // Initial render
-initializeStatusDropdowns();
 renderProducts();
