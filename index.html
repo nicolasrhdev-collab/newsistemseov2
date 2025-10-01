@@ -336,23 +336,26 @@
                         <!-- Etapa 2: Schema -->
                         <div id="seoFormStep2" class="seo-form-step">
                             <div class="mb-8">
-                                <h3 class="text-lg font-semibold text-neutral-900 mb-5">Schema</h3>
-                                
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <!-- Dados do Produto -->
-                                    <div>
-                                        <label class="form-label">Dados do Produto</label>
-                                        <div class="border border-neutral-200 rounded-lg p-5 bg-neutral-50 space-y-3 max-h-96 overflow-y-auto">
-                                            <div id="productFormSpecsInputs"></div>
-                                        </div>
+                                <!-- Dados do Produto -->
+                                <div class="mb-10 pb-8 border-b border-neutral-200">
+                                    <h3 class="text-lg font-semibold text-neutral-900 mb-5">Dados do Produto</h3>
+                                    <div id="productSchemaFields" class="space-y-4"></div>
+                                </div>
+
+                                <!-- Dados Extras para SEO -->
+                                <div class="mb-8">
+                                    <div class="flex items-center justify-between mb-5">
+                                        <h3 class="text-lg font-semibold text-neutral-900">Dados Extras para SEO</h3>
                                     </div>
-                                    
-                                    <!-- Tipo de Schema -->
-                                    <div>
-                                        <label class="form-label">Tipo de Schema *</label>
-                                        <input type="text" id="schemaTypeInput" placeholder="Ex: Product, Offer, Review" class="form-input">
-                                        <p class="text-xs text-neutral-500 mt-1">Digite o tipo de schema desejado</p>
+                                    <div class="flex gap-2 mb-4">
+                                        <input type="text" id="newSchemaFieldName" placeholder="Nome do campo" class="form-input flex-1">
+                                        <button type="button" onclick="addSchemaField()" class="px-3 py-2 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-all flex-shrink-0">
+                                            <svg class="w-5 h-5 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                        </button>
                                     </div>
+                                    <div id="extraSchemaFields" class="space-y-4"></div>
                                 </div>
                             </div>
                         </div>

@@ -1250,6 +1250,7 @@ function closeSeoForm() {
     benefits = [];
     uses = [];
     faqs = [];
+    extraSchemaFields = [];
     renderSecondaryKeywordsForm();
     renderLongTailKeywordsForm();
     currentSeoStep = 1;
@@ -1259,9 +1260,38 @@ function closeSeoForm() {
 let benefits = [];
 let uses = [];
 let faqs = [];
+let extraSchemaFields = [];
 let benefitCounter = 0;
 let useCounter = 0;
 let faqCounter = 0;
+let schemaFieldCounter = 0;
+
+// Tipos de Schema disponíveis
+const schemaTypes = [
+    'name',
+    'description',
+    'brand',
+    'sku',
+    'price',
+    'priceCurrency',
+    'availability',
+    'category',
+    'image',
+    'url',
+    'weight',
+    'width',
+    'height',
+    'depth',
+    'material',
+    'color',
+    'model',
+    'gtin',
+    'mpn',
+    'offers',
+    'review',
+    'aggregateRating',
+    'manufacturer'
+];
 
 // Form Step Navigation
 function goToFormStep(step) {
@@ -1336,54 +1366,205 @@ function updateFormPreview() {
     document.getElementById('descFormCount').textContent = document.getElementById('metaDescriptionFormInput').value.length;
 }
 
-// Load Product Specs as Inputs
+// Generate schema type options
+function generateSchemaTypeOptions(selectedType = '') {
+    return schemaTypes.map(type => 
+        `<option value="${type}" ${type === selectedType ? 'selected' : ''}>${type}</option>`
+    ).join('');
+}
+
+// Load Product Specs as Schema Fields
 function loadProductFormSpecsAsInputs() {
     const productId = parseInt(document.getElementById('seoFormProductId').value);
     const product = products.find(p => p.id === productId);
-    const container = document.getElementById('productFormSpecsInputs');
+    const container = document.getElementById('productSchemaFields');
     
     if (!product) {
         container.innerHTML = '<p class="text-sm text-neutral-500">Produto não encontrado</p>';
         return;
     }
     
-    let inputsHTML = `
-        <div>
-            <label class="form-label text-xs">Nome</label>
-            <input type="text" value="${product.name}" class="form-input text-sm" readonly>
-        </div>
-        <div>
-            <label class="form-label text-xs">SKU</label>
-            <input type="text" value="${product.sku}" class="form-input text-sm" readonly>
-        </div>
-        <div>
-            <label class="form-label text-xs">Categoria</label>
-            <input type="text" value="${product.category}" class="form-input text-sm" readonly>
+    let fieldsHTML = '';
+    
+    // Nome
+    fieldsHTML += `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+            <div class="lg:col-span-2">
+                <label class="form-label text-sm">Nome</label>
+                <input type="text" value="${product.name}" class="form-input" readonly>
+            </div>
+            <div>
+                <label class="form-label text-sm">Tipo Schema</label>
+                <select class="form-input">
+                    <option value="">Selecione</option>
+                    ${generateSchemaTypeOptions('name')}
+                </select>
+            </div>
         </div>
     `;
     
-    if (product.type === 'simples') {
-        inputsHTML += `
-            <div>
-                <label class="form-label text-xs">Peso</label>
-                <input type="text" value="${product.weight} kg" class="form-input text-sm" readonly>
+    // SKU
+    fieldsHTML += `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+            <div class="lg:col-span-2">
+                <label class="form-label text-sm">SKU</label>
+                <input type="text" value="${product.sku}" class="form-input" readonly>
             </div>
             <div>
-                <label class="form-label text-xs">Valor</label>
-                <input type="text" value="R$ ${product.price.toFixed(2)}" class="form-input text-sm" readonly>
+                <label class="form-label text-sm">Tipo Schema</label>
+                <select class="form-input">
+                    <option value="">Selecione</option>
+                    ${generateSchemaTypeOptions('sku')}
+                </select>
+            </div>
+        </div>
+    `;
+    
+    // Categoria
+    fieldsHTML += `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+            <div class="lg:col-span-2">
+                <label class="form-label text-sm">Categoria</label>
+                <input type="text" value="${product.category}" class="form-input" readonly>
+            </div>
+            <div>
+                <label class="form-label text-sm">Tipo Schema</label>
+                <select class="form-input">
+                    <option value="">Selecione</option>
+                    ${generateSchemaTypeOptions('category')}
+                </select>
+            </div>
+        </div>
+    `;
+    
+    // Peso
+    if (product.weight) {
+        fieldsHTML += `
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                <div class="lg:col-span-2">
+                    <label class="form-label text-sm">Peso</label>
+                    <input type="text" value="${product.weight} kg" class="form-input" readonly>
+                </div>
+                <div>
+                    <label class="form-label text-sm">Tipo Schema</label>
+                    <select class="form-input">
+                        <option value="">Selecione</option>
+                        ${generateSchemaTypeOptions('weight')}
+                    </select>
+                </div>
             </div>
         `;
-    } else if (product.specs) {
-        if (product.specs.brand) inputsHTML += `<div><label class="form-label text-xs">Marca</label><input type="text" value="${product.specs.brand}" class="form-input text-sm" readonly></div>`;
-        if (product.specs.material) inputsHTML += `<div><label class="form-label text-xs">Material</label><input type="text" value="${product.specs.material}" class="form-input text-sm" readonly></div>`;
-        if (product.specs.width) inputsHTML += `<div><label class="form-label text-xs">Largura</label><input type="text" value="${product.specs.width} cm" class="form-input text-sm" readonly></div>`;
-        if (product.specs.height) inputsHTML += `<div><label class="form-label text-xs">Altura</label><input type="text" value="${product.specs.height} cm" class="form-input text-sm" readonly></div>`;
-        if (product.specs.depth) inputsHTML += `<div><label class="form-label text-xs">Profundidade</label><input type="text" value="${product.specs.depth} cm" class="form-input text-sm" readonly></div>`;
-        if (product.weight) inputsHTML += `<div><label class="form-label text-xs">Peso</label><input type="text" value="${product.weight} kg" class="form-input text-sm" readonly></div>`;
-        if (product.price) inputsHTML += `<div><label class="form-label text-xs">Valor</label><input type="text" value="R$ ${product.price.toFixed(2)}" class="form-input text-sm" readonly></div>`;
     }
     
-    container.innerHTML = inputsHTML;
+    // Valor
+    if (product.price) {
+        fieldsHTML += `
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                <div class="lg:col-span-2">
+                    <label class="form-label text-sm">Valor</label>
+                    <input type="text" value="R$ ${product.price.toFixed(2)}" class="form-input" readonly>
+                </div>
+                <div>
+                    <label class="form-label text-sm">Tipo Schema</label>
+                    <select class="form-input">
+                        <option value="">Selecione</option>
+                        ${generateSchemaTypeOptions('price')}
+                    </select>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Specs do produto composto
+    if (product.specs) {
+        if (product.specs.brand) {
+            fieldsHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="form-label text-sm">Marca</label>
+                        <input type="text" value="${product.specs.brand}" class="form-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label text-sm">Tipo Schema</label>
+                        <select class="form-input">
+                            <option value="">Selecione</option>
+                            ${generateSchemaTypeOptions('brand')}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+        if (product.specs.material) {
+            fieldsHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="form-label text-sm">Material</label>
+                        <input type="text" value="${product.specs.material}" class="form-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label text-sm">Tipo Schema</label>
+                        <select class="form-input">
+                            <option value="">Selecione</option>
+                            ${generateSchemaTypeOptions('material')}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+        if (product.specs.width) {
+            fieldsHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="form-label text-sm">Largura</label>
+                        <input type="text" value="${product.specs.width} cm" class="form-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label text-sm">Tipo Schema</label>
+                        <select class="form-input">
+                            <option value="">Selecione</option>
+                            ${generateSchemaTypeOptions('width')}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+        if (product.specs.height) {
+            fieldsHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="form-label text-sm">Altura</label>
+                        <input type="text" value="${product.specs.height} cm" class="form-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label text-sm">Tipo Schema</label>
+                        <select class="form-input">
+                            <option value="">Selecione</option>
+                            ${generateSchemaTypeOptions('height')}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+        if (product.specs.depth) {
+            fieldsHTML += `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="form-label text-sm">Profundidade</label>
+                        <input type="text" value="${product.specs.depth} cm" class="form-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label text-sm">Tipo Schema</label>
+                        <select class="form-input">
+                            <option value="">Selecione</option>
+                            ${generateSchemaTypeOptions('depth')}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    container.innerHTML = fieldsHTML;
 }
 
 // Load Product Specs for Form
@@ -1767,6 +1948,64 @@ document.getElementById('selectProductModal').addEventListener('click', function
         closeSelectProductModal();
     }
 });
+
+// === SCHEMA EXTRA FIELDS ===
+function addSchemaField() {
+    const input = document.getElementById('newSchemaFieldName');
+    const fieldName = input.value.trim();
+    
+    if (fieldName) {
+        schemaFieldCounter++;
+        const id = schemaFieldCounter;
+        extraSchemaFields.push({ id, name: fieldName, value: '', type: '' });
+        input.value = '';
+        renderExtraSchemaFields();
+    }
+}
+
+function removeSchemaField(id) {
+    extraSchemaFields = extraSchemaFields.filter(f => f.id !== id);
+    renderExtraSchemaFields();
+}
+
+function updateSchemaField(id, field, value) {
+    const schemaField = extraSchemaFields.find(f => f.id === id);
+    if (schemaField) {
+        schemaField[field] = value;
+    }
+}
+
+function renderExtraSchemaFields() {
+    const container = document.getElementById('extraSchemaFields');
+    if (extraSchemaFields.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-500">Nenhum campo extra adicionado</p>';
+        return;
+    }
+    
+    container.innerHTML = extraSchemaFields.map(field => `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 items-end">
+            <div>
+                <label class="form-label text-sm">${field.name}</label>
+                <input type="text" placeholder="Valor" value="${field.value}" 
+                    onchange="updateSchemaField(${field.id}, 'value', this.value)" class="form-input">
+            </div>
+            <div>
+                <label class="form-label text-sm">Tipo Schema</label>
+                <select class="form-input" onchange="updateSchemaField(${field.id}, 'type', this.value)">
+                    <option value="">Selecione</option>
+                    ${generateSchemaTypeOptions(field.type)}
+                </select>
+            </div>
+            <div>
+                <button type="button" onclick="removeSchemaField(${field.id})" class="w-full px-3 py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-all">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
 
 // === BENEFÍCIOS ===
 function addBenefitFromInput() {
