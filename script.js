@@ -258,16 +258,6 @@ function openSimpleProductModal(productId = null) {
     const modal = document.getElementById('simpleProductModal');
     const form = document.getElementById('simpleProductForm');
     
-    // Initialize product type dropdown (only for new products)
-    if (!productId) {
-        document.getElementById('productTypeDropdownContainer').innerHTML = createCustomDropdown(
-            'productTypeDropdown', 
-            ['Simples', 'Composto'], 
-            'Simples', 
-            'Selecione o tipo'
-        );
-    }
-    
     if (productId) {
         const product = products.find(p => p.id === productId);
         currentEditId = productId;
@@ -278,13 +268,19 @@ function openSimpleProductModal(productId = null) {
         document.getElementById('simpleWeight').value = product.weight;
         document.getElementById('simplePrice').value = product.price;
         // Hide dropdown when editing
-        document.getElementById('productTypeDropdownContainer').closest('.mb-6').style.display = 'none';
+        document.getElementById('simpleProductTypeSection').style.display = 'none';
     } else {
         currentEditId = null;
         form.reset();
+        // Initialize product type dropdown (only for new products)
+        document.getElementById('productTypeDropdownContainer').innerHTML = createCustomDropdown(
+            'productTypeDropdown', 
+            ['Simples', 'Composto'], 
+            'Simples', 
+            'Selecione o tipo'
+        );
         // Show dropdown when creating new
-        const container = document.getElementById('productTypeDropdownContainer').closest('.mb-6');
-        if (container) container.style.display = 'block';
+        document.getElementById('simpleProductTypeSection').style.display = 'block';
     }
     
     modal.classList.add('active');
