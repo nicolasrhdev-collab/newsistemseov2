@@ -75,21 +75,51 @@ Dashboard moderno e profissional para controle de produtos com interface clean e
 
 ```
 seosistem/
-├── index.html      # Estrutura HTML
-├── styles.css      # Estilos customizados
-├── script.js       # Lógica da aplicação
-└── README.md       # Documentação
+├── index.html           # Estrutura HTML
+├── css/
+│   └── styles.css       # Estilos customizados
+├── js/
+│   └── script.js        # Lógica da aplicação
+├── server.py            # Servidor de desenvolvimento
+├── start-server.bat     # Script Windows
+├── start-server.sh      # Script Linux/Mac
+├── README.md            # Documentação principal
+├── SERVER.md            # Documentação do servidor
+└── STRUCTURE.md         # Estrutura detalhada do código
 ```
 
 ## 🚀 Como Usar
 
+### Opção 1: Servidor de Desenvolvimento (Recomendado)
+
 1. Clone o repositório:
 ```bash
 git clone https://github.com/nicolasrhdev-collab/newsistemseov2.git
+cd newsistemseov2
 ```
 
-2. Abra o arquivo `index.html` no seu navegador
+2. Inicie o servidor:
 
+**Windows:**
+```bash
+start-server.bat
+```
+Ou simplesmente clique duas vezes no arquivo `start-server.bat`
+
+**Linux/Mac:**
+```bash
+chmod +x start-server.sh
+./start-server.sh
+```
+
+3. O navegador abrirá automaticamente em `http://localhost:8000`
+
+📖 **[Documentação completa do servidor →](SERVER.md)**
+
+### Opção 2: Abrir Diretamente
+
+1. Clone o repositório
+2. Abra o arquivo `index.html` no seu navegador
 3. Comece a adicionar produtos!
 
 ## 💡 Recursos Técnicos
