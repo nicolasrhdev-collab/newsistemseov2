@@ -25,11 +25,17 @@
             </div>
             
             <nav class="flex-1 p-3">
-                <a href="#" class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-neutral-900 text-white text-sm font-medium transition-all">
+                <a href="#" id="menuProdutos" onclick="switchPage('produtos')" class="menu-item flex items-center gap-2 px-3 py-2.5 rounded-lg bg-neutral-900 text-white text-sm font-medium transition-all mb-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                     </svg>
                     Produtos
+                </a>
+                <a href="#" id="menuSeo" onclick="switchPage('seo')" class="menu-item flex items-center gap-2 px-3 py-2.5 rounded-lg text-neutral-700 hover:bg-neutral-100 text-sm font-medium transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    SEO
                 </a>
             </nav>
         </aside>
@@ -40,8 +46,8 @@
             <header class="bg-white shadow-sm border-b border-neutral-200">
                 <div class="px-6 py-4">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-semibold text-neutral-900">Produtos</h2>
-                        <button onclick="openTypeModal()" class="bg-neutral-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-neutral-800 transition-all duration-200 flex items-center gap-2 shadow-sm">
+                        <h2 id="pageTitle" class="text-2xl font-semibold text-neutral-900">Produtos</h2>
+                        <button id="actionButton" onclick="openTypeModal()" class="bg-neutral-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-neutral-800 transition-all duration-200 flex items-center gap-2 shadow-sm">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
@@ -52,7 +58,9 @@
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto bg-neutral-100">
+            <main id="mainContent" class="flex-1 overflow-y-auto bg-neutral-100">
+                <!-- Products Page -->
+                <div id="productsPage">
                 <!-- Search and Filter Bar -->
                 <div class="p-6 pb-4">
                     <div class="flex items-center gap-3">
@@ -154,6 +162,37 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                <!-- End Products Page -->
+
+                <!-- SEO Page -->
+                <div id="seoPage" class="hidden">
+                    <div class="p-6">
+                        <div id="seoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- SEO cards will be inserted here -->
+                        </div>
+                        
+                        <!-- Empty State SEO -->
+                        <div id="emptyStateSeo" class="text-center py-20">
+                            <div class="bg-neutral-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-900">Nenhum SEO cadastrado</h3>
+                            <p class="mt-2 text-sm text-neutral-500">Comece criando um novo cadastro de SEO para um produto.</p>
+                            <div class="mt-6">
+                                <button onclick="openSelectProductModal()" class="inline-flex items-center px-4 py-2 border border-neutral-300 shadow-sm text-sm font-medium rounded-lg text-neutral-700 bg-white hover:bg-neutral-50 transition-all">
+                                    <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Criar SEO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End SEO Page -->
             </main>
         </div>
     </div>
@@ -539,6 +578,100 @@
                     <button type="submit" id="submitBtn" style="display: none;"
                         class="ml-auto px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
                         Salvar Produto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Selecionar Produto para SEO -->
+    <div id="selectProductModal" class="modal-overlay">
+        <div class="modal-content max-w-2xl">
+            <div class="px-6 py-5 border-b border-neutral-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-semibold text-neutral-900">Selecione um Produto</h3>
+                    <button onclick="closeSelectProductModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="px-6 py-6">
+                <div class="mb-4">
+                    <input 
+                        type="text" 
+                        id="searchProductSeo" 
+                        placeholder="Buscar produto..." 
+                        class="form-input"
+                        oninput="filterProductsForSeo()">
+                </div>
+                
+                <div id="productListSeo" class="space-y-2 max-h-96 overflow-y-auto">
+                    <!-- Products will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cadastro de SEO -->
+    <div id="seoModal" class="modal-overlay">
+        <div class="modal-content max-w-3xl">
+            <div class="px-6 py-5 border-b border-neutral-200">
+                <div class="flex justify-between items-center">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-neutral-900">Cadastro de SEO</h3>
+                        <p id="seoProductName" class="text-sm text-neutral-500 mt-1"></p>
+                    </div>
+                    <button onclick="closeSeoModal()" class="text-neutral-400 hover:text-neutral-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <form id="seoForm" class="px-6 py-6">
+                <input type="hidden" id="seoProductId">
+                
+                <!-- Etapa 1: Palavras-chave -->
+                <div id="seoStep1" class="seo-step active">
+                    <h4 class="text-lg font-semibold text-neutral-900 mb-4">Palavras-chave</h4>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Adicionar Palavras-chave</label>
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="keywordInput" 
+                                placeholder="Digite uma palavra-chave e pressione Enter"
+                                class="form-input flex-1"
+                                onkeypress="handleKeywordEnter(event)">
+                            <button type="button" onclick="addKeyword()" class="px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all">
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="keywordsContainer" class="flex flex-wrap gap-2 mb-4">
+                        <!-- Keywords tags will be inserted here -->
+                    </div>
+                    
+                    <div class="text-sm text-neutral-500">
+                        <p>💡 Dica: Adicione palavras-chave relevantes para otimizar o SEO do produto</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex gap-3 pt-4 border-t border-neutral-200 mt-6">
+                    <button type="button" onclick="closeSeoModal()" 
+                        class="px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="ml-auto px-4 py-2 bg-neutral-900 text-white text-sm rounded-lg font-medium hover:bg-neutral-800 transition-all shadow-sm">
+                        Salvar SEO
                     </button>
                 </div>
             </form>

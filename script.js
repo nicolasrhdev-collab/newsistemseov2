@@ -82,6 +82,9 @@ let componentCounter = 0;
 let packageCounter = 0;
 let currentEditId = null;
 let currentView = 'todos'; // todos, simples, composto
+let currentPage = 'produtos'; // produtos, seo
+let keywords = [];
+let seoData = JSON.parse(localStorage.getItem('seoData')) || [];
 
 // Render products
 function renderProducts(filteredProducts = null) {
@@ -1053,6 +1056,271 @@ window.addEventListener('scroll', function() {
         compositeDropdown.style.width = `${rect.width}px`;
     }
 }, true);
+
+// ============= PAGE NAVIGATION =============
+
+function switchPage(page) {
+    currentPage = page;
+    
+    // Update menu items
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('bg-neutral-900', 'text-white');
+        item.classList.add('text-neutral-700', 'hover:bg-neutral-100');
+    });
+    
+    if (page === 'produtos') {
+        document.getElementById('menuProdutos').classList.add('bg-neutral-900', 'text-white');
+        document.getElementById('menuProdutos').classList.remove('text-neutral-700', 'hover:bg-neutral-100');
+        document.getElementById('pageTitle').textContent = 'Produtos';
+        document.getElementById('actionButton').innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Novo Produto
+        `;
+        document.getElementById('actionButton').onclick = openTypeModal;
+        document.getElementById('productsPage').classList.remove('hidden');
+        document.getElementById('seoPage').classList.add('hidden');
+    } else if (page === 'seo') {
+        document.getElementById('menuSeo').classList.add('bg-neutral-900', 'text-white');
+        document.getElementById('menuSeo').classList.remove('text-neutral-700', 'hover:bg-neutral-100');
+        document.getElementById('pageTitle').textContent = 'SEO';
+        document.getElementById('actionButton').innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Criar SEO
+        `;
+        document.getElementById('actionButton').onclick = openSelectProductModal;
+        document.getElementById('productsPage').classList.add('hidden');
+        document.getElementById('seoPage').classList.remove('hidden');
+        renderSeoList();
+    }
+}
+
+// ============= SEO MANAGEMENT =============
+
+// Render SEO list
+function renderSeoList() {
+    const grid = document.getElementById('seoGrid');
+    const emptyState = document.getElementById('emptyStateSeo');
+    
+    if (seoData.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+    } else {
+        emptyState.classList.add('hidden');
+        grid.innerHTML = seoData.map(seo => {
+            const product = products.find(p => p.id === seo.productId);
+            return `
+                <div class="bg-white border border-neutral-200 rounded-lg p-5 hover:shadow-md hover:border-neutral-300 transition-all">
+                    <div class="mb-3">
+                        <h3 class="text-base font-semibold text-neutral-900 mb-1">${product ? product.name : 'Produto não encontrado'}</h3>
+                        <p class="text-xs text-neutral-500">${product ? product.sku : ''}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <p class="text-xs text-neutral-500 mb-2">Palavras-chave:</p>
+                        <div class="flex flex-wrap gap-1">
+                            ${seo.keywords.slice(0, 3).map(keyword => `
+                                <span class="px-2 py-1 bg-neutral-100 text-neutral-700 text-xs rounded">${keyword}</span>
+                            `).join('')}
+                            ${seo.keywords.length > 3 ? `<span class="px-2 py-1 text-neutral-500 text-xs">+${seo.keywords.length - 3}</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-100">
+                        <span class="text-xs text-neutral-500">${seo.keywords.length} palavras-chave</span>
+                        <div class="flex gap-1">
+                            <button onclick="editSeo(${seo.id})" class="p-1.5 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button onclick="deleteSeo(${seo.id})" class="p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// Open select product modal
+function openSelectProductModal() {
+    const modal = document.getElementById('selectProductModal');
+    modal.classList.add('active');
+    renderProductListForSeo();
+}
+
+// Close select product modal
+function closeSelectProductModal() {
+    const modal = document.getElementById('selectProductModal');
+    modal.classList.remove('active');
+}
+
+// Render product list for SEO
+function renderProductListForSeo(filter = '') {
+    const container = document.getElementById('productListSeo');
+    let filteredProducts = products;
+    
+    if (filter) {
+        filteredProducts = products.filter(p => 
+            p.name.toLowerCase().includes(filter.toLowerCase()) ||
+            p.sku.toLowerCase().includes(filter.toLowerCase())
+        );
+    }
+    
+    container.innerHTML = filteredProducts.map(product => `
+        <button onclick="selectProductForSeo(${product.id})" class="w-full text-left p-4 border border-neutral-200 rounded-lg hover:bg-neutral-50 hover:border-neutral-300 transition-all">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="font-semibold text-neutral-900">${product.name}</p>
+                    <p class="text-sm text-neutral-500">${product.sku} • ${product.type === 'simples' ? 'Simples' : 'Composto'}</p>
+                </div>
+                <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </div>
+        </button>
+    `).join('');
+}
+
+// Filter products for SEO
+function filterProductsForSeo() {
+    const filter = document.getElementById('searchProductSeo').value;
+    renderProductListForSeo(filter);
+}
+
+// Select product for SEO
+function selectProductForSeo(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        document.getElementById('seoProductId').value = productId;
+        document.getElementById('seoProductName').textContent = `Produto: ${product.name} (${product.sku})`;
+        closeSelectProductModal();
+        openSeoModal();
+    }
+}
+
+// Open SEO modal
+function openSeoModal() {
+    const modal = document.getElementById('seoModal');
+    modal.classList.add('active');
+    keywords = [];
+    renderKeywords();
+}
+
+// Close SEO modal
+function closeSeoModal() {
+    const modal = document.getElementById('seoModal');
+    modal.classList.remove('active');
+    document.getElementById('seoForm').reset();
+    keywords = [];
+    renderKeywords();
+}
+
+// Add keyword
+function addKeyword() {
+    const input = document.getElementById('keywordInput');
+    const keyword = input.value.trim();
+    
+    if (keyword && !keywords.includes(keyword)) {
+        keywords.push(keyword);
+        input.value = '';
+        renderKeywords();
+    }
+}
+
+// Handle Enter key on keyword input
+function handleKeywordEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addKeyword();
+    }
+}
+
+// Remove keyword
+function removeKeyword(keyword) {
+    keywords = keywords.filter(k => k !== keyword);
+    renderKeywords();
+}
+
+// Render keywords
+function renderKeywords() {
+    const container = document.getElementById('keywordsContainer');
+    
+    if (keywords.length === 0) {
+        container.innerHTML = '<p class="text-sm text-neutral-400">Nenhuma palavra-chave adicionada ainda</p>';
+    } else {
+        container.innerHTML = keywords.map(keyword => `
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-900 text-white text-sm rounded-lg">
+                ${keyword}
+                <button type="button" onclick="removeKeyword('${keyword}')" class="hover:text-red-300 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+    }
+}
+
+// Save SEO
+document.getElementById('seoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const productId = parseInt(document.getElementById('seoProductId').value);
+    
+    if (keywords.length === 0) {
+        alert('Adicione pelo menos uma palavra-chave!');
+        return;
+    }
+    
+    const newId = seoData.length > 0 ? Math.max(...seoData.map(s => s.id)) + 1 : 1;
+    
+    seoData.push({
+        id: newId,
+        productId: productId,
+        keywords: [...keywords]
+    });
+    
+    localStorage.setItem('seoData', JSON.stringify(seoData));
+    renderSeoList();
+    closeSeoModal();
+});
+
+// Edit SEO
+function editSeo(id) {
+    // To be implemented later
+    alert('Função de editar em desenvolvimento');
+}
+
+// Delete SEO
+function deleteSeo(id) {
+    if (confirm('Tem certeza que deseja excluir este SEO?')) {
+        seoData = seoData.filter(s => s.id !== id);
+        localStorage.setItem('seoData', JSON.stringify(seoData));
+        renderSeoList();
+    }
+}
+
+// Close modals on outside click
+document.getElementById('selectProductModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSelectProductModal();
+    }
+});
+
+document.getElementById('seoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSeoModal();
+    }
+});
 
 // Initial render
 renderProducts();

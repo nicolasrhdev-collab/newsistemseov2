@@ -264,6 +264,20 @@ button:active {
     /* No background, no border - clean layout */
 }
 
+/* Menu items */
+.menu-item {
+    cursor: pointer;
+}
+
+/* SEO Steps */
+.seo-step {
+    display: none;
+}
+
+.seo-step.active {
+    display: block;
+}
+
 /* Step Indicator */
 .step-indicator {
     padding: 0.5rem 1rem;
