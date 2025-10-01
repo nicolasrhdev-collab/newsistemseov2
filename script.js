@@ -1118,7 +1118,6 @@ function switchPage(page) {
     document.getElementById('productsPage').classList.add('hidden');
     document.getElementById('seoPage').classList.add('hidden');
     document.getElementById('seoFormPage').classList.add('hidden');
-    document.getElementById('utilitiesPage').classList.add('hidden');
     
     if (page === 'produtos') {
         document.getElementById('menuProdutos').classList.add('bg-neutral-900', 'text-white');
