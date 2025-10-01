@@ -164,6 +164,7 @@ main::-webkit-scrollbar-thumb:hover {
     background-color: #f5f5f5;
     align-items: flex-start;
     padding: 2rem 1rem;
+    z-index: 100;
 }
 
 #seoModal .modal-content {
